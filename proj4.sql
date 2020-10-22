@@ -121,6 +121,19 @@ CREATE TABLE RecipesInMeals(
   FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id) ON DELETE CASCADE
 );
 
+
+INSERT INTO DietaryRestriction VALUES ("Vegan");
+INSERT INTO DietaryRestriction VALUES ("Vegatarian");
+INSERT INTO DietaryRestriction VALUES ("Lactose intolerant");
+INSERT INTO DietaryRestriction VALUES ("gluten free");
+
+INSERT INTO CookingTool VALUES ("pot");
+INSERT INTO CookingTool VALUES ("spatula");
+INSERT INTO CookingTool VALUES ("fork");
+
+INSERT INTO Recipe VALUES ("Pizza", "Italian", "Pepperoni Pizza");
+INSERT INTO Recipe VALUES ("Burger", "America", "Cheeseburger");
+
 SHOW COLUMNS
 FROM DietaryRestriction;
 
