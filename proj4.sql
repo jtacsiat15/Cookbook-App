@@ -123,7 +123,7 @@ CREATE TABLE RecipesInMeals(
 
 INSERT INTO DietaryRestriction (restriction_name)
   VALUES ("Vegan"),
-          ("Vegatarian"),
+          ("Vegetarian"),
           ("Lactose intolerant"),
           ("gluten free");
 
@@ -137,7 +137,9 @@ INSERT INTO CookingTool (tool_name)
 
 INSERT INTO User (username, name, password)
   VALUES ("gordonramsay123", "Gordon Ramsay", "hellskitchen"),
-          ("altonbrown_1", "Alton Brown", "iLik3toCook");
+          ("altonbrown_1", "Alton Brown", "iLik3toCook"),
+          ("guyfieri420", "Guy Fieri", "triple_D!"),
+          ("spongebob2", "Spongebob Squarepants", "krustykrab");
 
 INSERT INTO Recipe (food_type, cuisine_type, recipe_title, username)
   VALUES ("pizza", "italian", "Pizza Margherita on Focaccia", "gordonramsay123"),
@@ -163,22 +165,13 @@ INSERT INTO Ingredient (ingredient_name, recipe_id)
           ("Leeks", NULL),
           ("Scallions", NULL),
           ("Tofu", NULL),
-          ("Miso", NULL);
-
-
-INSERT INTO Ingredient (ingredient_name, recipe_id)
-    VALUES ("Pepperoni", NULL),
-           ("Dough", NULL),
-           ("Pizza Sauce", NULL),
-           ("Cheese", NULL);
-
-INSERT INTO Ingredient (ingredient_name, recipe_id)
-  VALUES ("Burger meat", NULL),
+          ("Miso", NULL),
+          ("Pepperoni", NULL),
+          ("Dough", NULL),
+          ("Burger meat", NULL),
           ("Buns", NULL),
           ("Condiments", NULL),
           ("Lettuce", NULL);
-
-
 
 SELECT *
 FROM DietaryRestriction;
@@ -191,3 +184,6 @@ FROM Recipe;
 
 SELECT *
 FROM User;
+
+SELECT *
+FROM Ingredient;
