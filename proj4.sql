@@ -82,7 +82,7 @@ CREATE TABLE Ingredient(
 CREATE TABLE Instruction(
   recipe_id INT UNSIGNED,
   step_number SMALLINT UNSIGNED,
-  description VARCHAR(200) NOT NULL,
+  description VARCHAR(800) NOT NULL,
   PRIMARY KEY (recipe_id, step_number),
   FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id) ON DELETE CASCADE
 );
@@ -143,9 +143,9 @@ INSERT INTO User (username, name, password)
 
 INSERT INTO Recipe (food_type, cuisine_type, recipe_title, username)
   VALUES ("pizza", "italian", "Pizza Margherita on Focaccia", "gordonramsay123"),
-          ("Bread", "italian", "Focaccia", "gordonramsay123"),
-          ("Pizza", "Italian", "Pepperoni Pizza", NULL),
-          ("Burger", "America", "Cheeseburger", NULL),
+          ("Bread", "italian", "Focaccia Bread", "gordonramsay123"),
+          ("Pizza", "Italian", "Pepperoni Pizza", "guyfieri420"),
+          ("Burger", "America", "Cheeseburger", "spongebob2"),
           ("Soup", "Japanese", "Miso Soup", "altonbrown_1");
 
 INSERT INTO Ingredient (ingredient_name, recipe_id)
@@ -173,6 +173,54 @@ INSERT INTO Ingredient (ingredient_name, recipe_id)
           ("Condiments", NULL),
           ("Lettuce", NULL);
 
+INSERT INTO Rating (score, date_added, username, recipe_id)
+  VALUES (5, '2015-04-03', "gordonramsay123", 4),
+          (1, '2019-02-05', "gordonramsay123", 3),
+          (4, '2017-06-12', "altonbrown_1", 2),
+          (3, '2018-07-11', "guyfieri420", 2),
+          (5, '2019-01-10', "spongebob2", 5),
+          (5, '2020-01-04', "spongebob2", 1);
+
+INSERT INTO IngredientOf (recipe_id, ingredient_id, amount, measurement_units)
+  VALUES (2, 7, 3.25, "cups"),
+          (2, 8, 1, "tablespoon"),
+          (2, 9, .5, "teaspoons"),
+          (2, 10, 1.75, "cups"),
+          (2, 11, 4, "tablespoons");
+
+INSERT INTO IngredientOf (recipe_id, ingredient_id, amount, measurement_units)
+  VALUES (1, 1, 1, NULL),
+          (1, 2, .25, "cups"),
+          (1, 3, 6, "oz"),
+          (1, 4, 1, "cup"),
+          (1, 5, 1, "oz"),
+          (1, 6, 2, "tablespoons");
+
+INSERT INTO Instruction (recipe_id, step_number, description)
+  VALUES (2, 1, "Whisk together the flour, kosher salt and yeast. Add the warm water to the flour mixture and stir until incorporated."),
+          (2, 2, "Pour 2 tablespoons oil into a medium bowl. Transfer the dough to the bowl, cover with plastic wrap. Place in the refrigerator to rest for 24 hours."),
+          (2, 3, "Brush the inside of a 9-by-13-inch baking sheet with oil. Remove the dough from the refrigerator and transfer to the prepared pan."),
+          (2, 4, "Using your hands, spread the dough out as much as possible, adding oil to the dough if needed to keep it from sticking."),
+          (2, 5, "Place the dough in a warm place and let rise until about doubled in size. When the dough is ready, it should be room temperature, spread out on the sheet and fluffy."),
+          (2, 6, "Heat the oven to 450 degrees. Using your palms, pat down the focaccia to an even thickness of about 1 inch, then, using your fingertips, dimple the entire dough. "),
+          (2, 7, "Drizzle it with the remaining 2 tablespoons olive oil. Sprinkle the entire surface of the focaccia evenly with the sea salt and herbs, if using."),
+          (2, 8, "Bake, rotating once front to back, until the top is uniformly golden brown, 20 to 25 minutes. Transfer the focaccia on the baking sheet to a wire rack to cool.");
+
+INSERT INTO Instruction (recipe_id, step_number, description)
+  VALUES (1, 1, "Preheat oven to 375."),
+          (1, 2, "Spread focaccia bread with pizza sauce, and top with mozzarella and tomatoes."),
+          (1, 3, "Cook until cheese melts.  Broil for a minute or so until the cheese is just starting to char on the tops of bubbles."),
+          (1, 4, "Top with basil and balsamic glaze.");
+
+INSERT INTO CookingToolsRequired (tool_id, recipe_id)
+  VALUES (3, 2);
+          (1, 2);
+
+INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id)
+  VALUES(2, 2),
+        (1, 2),
+        (5, 1);
+
 SELECT *
 FROM DietaryRestriction;
 
@@ -187,3 +235,12 @@ FROM User;
 
 SELECT *
 FROM Ingredient;
+
+SELECT *
+FROM Rating;
+
+SELECT *
+FROM IngredientOf;
+
+SELECT *
+FROM Instruction;
