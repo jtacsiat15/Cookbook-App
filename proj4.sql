@@ -165,6 +165,21 @@ INSERT INTO Ingredient (ingredient_name, recipe_id)
           ("Tofu", NULL),
           ("Miso", NULL);
 
+
+INSERT INTO Ingredient (ingredient_name, recipe_id)
+    VALUES ("Pepperoni", NULL),
+           ("Dough", NULL),
+           ("Pizza Sauce", NULL),
+           ("Cheese", NULL);
+
+INSERT INTO Ingredient (ingredient_name, recipe_id)
+  VALUES ("Burger meat", NULL),
+          ("Buns", NULL),
+          ("Condiments", NULL),
+          ("Lettuce", NULL);
+
+
+
 SELECT *
 FROM DietaryRestriction;
 
