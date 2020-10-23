@@ -121,51 +121,36 @@ CREATE TABLE RecipesInMeals(
   FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id) ON DELETE CASCADE
 );
 
+INSERT INTO DietaryRestriction (restriction_name)
+  VALUES ("Vegan"),
+          ("Vegatarian"),
+          ("Lactose intolerant"),
+          ("gluten free");
 
-INSERT INTO DietaryRestriction VALUES ("Vegan");
-INSERT INTO DietaryRestriction VALUES ("Vegatarian");
-INSERT INTO DietaryRestriction VALUES ("Lactose intolerant");
-INSERT INTO DietaryRestriction VALUES ("gluten free");
+INSERT INTO CookingTool (tool_name)
+  VALUES ("pot"),
+          ("spatula"),
+          ("oven"),
+          ("stovetop"),
+          ("grill"),
+          ("blender");
 
-INSERT INTO CookingTool VALUES ("pot");
-INSERT INTO CookingTool VALUES ("spatula");
-INSERT INTO CookingTool VALUES ("fork");
+INSERT INTO User (username, name, password)
+  VALUES ("gordonramsay123", "Gordon Ramsay", "hellskitchen");
 
-INSERT INTO Recipe VALUES ("Pizza", "Italian", "Pepperoni Pizza");
-INSERT INTO Recipe VALUES ("Burger", "America", "Cheeseburger");
+INSERT INTO Recipe (food_type, cuisine_type, recipe_title, username)
+  VALUES ("pizza", "italian", "Pizza Margherita on Focaccia", "gordonramsay123"),
+          ("Pizza", "Italian", "Pepperoni Pizza", NULL),
+          ("Burger", "America", "Cheeseburger", NULL);
 
-SHOW COLUMNS
+SELECT *
 FROM DietaryRestriction;
 
-SHOW COLUMNS
+SELECT *
 FROM CookingTool;
 
-SHOW COLUMNS
-FROM User;
-
-SHOW COLUMNS
-FROM Meal;
-
-SHOW COLUMNS
+SELECT *
 FROM Recipe;
 
-SHOW COLUMNS
-FROM Rating;
-
-SHOW COLUMNS
-FROM Ingredient;
-
-SHOW COLUMNS
-FROM Instruction;
-
-SHOW COLUMNS
-FROM IngredientOf;
-
-SHOW COLUMNS
-FROM CookingToolsRequired;
-
-SHOW COLUMNS
-FROM RecipeHasDietaryRestrictions;
-
-SHOW COLUMNS
-FROM RecipesInMeals;
+SELECT *
+FROM User;
