@@ -173,6 +173,44 @@ INSERT INTO Ingredient (ingredient_name, recipe_id)
           ("Condiments", NULL),
           ("Lettuce", NULL);
 
+
+
+
+INSERT INTO IngredientOf(recipe_id, ingredient_id, amount, measurement_units)
+  VALUES (3, 2, 5, "cups"),
+          (3, 3, 3, "oz"),
+          (3, 18, 20, "slices");
+
+
+INSERT INTO IngredientOf(recipe_id, ingredient_id, amount, measurement_units)
+  VALUES (4, 22, 5, "cups"),
+          (4, 20, 3, "oz"),
+          (4, 3, 2, "slices");
+
+INSERT INTO Instruction(recipe_id, step_number, description)
+  VALUES (3, 1, "Set up Buns"),
+          (3, 2, "Put condiment here"),
+          (3, 3, "Put burger on bun"),
+          (3, 4, "Close bun");
+
+INSERT INTO Instruction(recipe_id, step_number, description)
+  VALUES (4, 1, "Set up Dough"),
+          (4, 2, "Put sauce on dough"),
+          (4, 3, "Put Pepperoni on dough"),
+          (4, 4, "Put cheese on dough"),
+          (4, 5, "Bake");
+
+INSERT INTO CookingToolsRequired(tool_id, recipe_id)
+  VALUES (5, 3),
+          (2, 3),
+          (3, 4);
+
+
+INSERT INTO Meal(meal_name, description, username)
+  VALUES ("Burgers and pizzz", "A burger and a pizza", "gordonramsay123"),
+  ("Pizza and Soup", "A pizza and some Japanese Miso Soup", "guyfieri420"),
+  ("Burgers with Focaccia Bread", "Burgers using Focaccia Bread", "spongebob2");
+
 SELECT *
 FROM DietaryRestriction;
 
@@ -187,3 +225,15 @@ FROM User;
 
 SELECT *
 FROM Ingredient;
+
+SELECT *
+FROM IngredientOf;
+
+SELECT *
+FROM Instruction;
+
+SELECT *
+FROM CookingToolsRequired;
+
+SELECT *
+FROM Meal;
