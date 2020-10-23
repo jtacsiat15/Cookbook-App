@@ -1,9 +1,9 @@
 /*----------------------------------------------------------------------
- * Name:
- * File:
- * Date:
- * Class:
- * Description:
+ * Name: Anna Smith and Jalen Tacsiat
+ * File: proj4.sql
+ * Date: 10/22/2020
+ * Class: CPSC 321 - Databases
+ * Description: Create and insert statements for our recipes database
  ----------------------------------------------------------------------*/
 
 -- required in MariaDB to enforce constraints
@@ -196,15 +196,34 @@ INSERT INTO IngredientOf (recipe_id, ingredient_id, amount, measurement_units)
           (1, 5, 1, "oz"),
           (1, 6, 2, "tablespoons");
 
+INSERT INTO IngredientOf(recipe_id, ingredient_id, amount, measurement_units)
+  VALUES (3, 2, 5, "cups"),
+          (3, 3, 3, "oz"),
+          (3, 18, 20, "slices");
+
+INSERT INTO IngredientOf(recipe_id, ingredient_id, amount, measurement_units)
+  VALUES (4, 22, 5, "cups"),
+          (4, 20, 3, "oz"),
+          (4, 3, 2, "slices");
+
+INSERT INTO IngredientOf(recipe_id, ingredient_id, amount, measurement_units)
+  VALUES (5, 12, 6, "cups"),
+          (5, 13, 1, "sheet"),
+          (5, 14, 1, NULL),
+          (5, 15, 3, NULL),
+          (5, 16, 8, "oz"),
+          (5, 17, 2, "tablespoons");
+
 INSERT INTO Instruction (recipe_id, step_number, description)
   VALUES (2, 1, "Whisk together the flour, kosher salt and yeast. Add the warm water to the flour mixture and stir until incorporated."),
-          (2, 2, "Pour 2 tablespoons oil into a medium bowl. Transfer the dough to the bowl, cover with plastic wrap. Place in the refrigerator to rest for 24 hours."),
-          (2, 3, "Brush the inside of a 9-by-13-inch baking sheet with oil. Remove the dough from the refrigerator and transfer to the prepared pan."),
-          (2, 4, "Using your hands, spread the dough out as much as possible, adding oil to the dough if needed to keep it from sticking."),
-          (2, 5, "Place the dough in a warm place and let rise until about doubled in size. When the dough is ready, it should be room temperature, spread out on the sheet and fluffy."),
-          (2, 6, "Heat the oven to 450 degrees. Using your palms, pat down the focaccia to an even thickness of about 1 inch, then, using your fingertips, dimple the entire dough. "),
-          (2, 7, "Drizzle it with the remaining 2 tablespoons olive oil. Sprinkle the entire surface of the focaccia evenly with the sea salt and herbs, if using."),
-          (2, 8, "Bake, rotating once front to back, until the top is uniformly golden brown, 20 to 25 minutes. Transfer the focaccia on the baking sheet to a wire rack to cool.");
+          (2, 2, "Pour 2 tablespoons oil into a medium bowl. Transfer the dough to the bowl, cover with plastic wrap."),
+          (2, 3, "Place in the refrigerator to rest for 24 hours."),
+          (2, 4, "Brush the inside of a 9-by-13-inch baking sheet with oil. Remove the dough from the refrigerator and transfer to the prepared pan."),
+          (2, 5, "Using your hands, spread the dough out as much as possible, adding oil to the dough if needed to keep it from sticking."),
+          (2, 6, "Place the dough in a warm place and let rise until about doubled in size. Then, spread out on sheet."),
+          (2, 7, "Heat the oven to 450 degrees. Pat down the focaccia to an even thickness of about 1 inch."),
+          (2, 8, "Drizzle it with the remaining 2 tablespoons olive oil. Sprinkle with salt."),
+          (2, 9, "Bake, rotating once front to back, until the top is uniformly golden brown, 20 to 25 minutes. Cool for 20 minutes");
 
 INSERT INTO Instruction (recipe_id, step_number, description)
   VALUES (1, 1, "Preheat oven to 375."),
@@ -212,14 +231,51 @@ INSERT INTO Instruction (recipe_id, step_number, description)
           (1, 3, "Cook until cheese melts.  Broil for a minute or so until the cheese is just starting to char on the tops of bubbles."),
           (1, 4, "Top with basil and balsamic glaze.");
 
-INSERT INTO CookingToolsRequired (tool_id, recipe_id)
-  VALUES (3, 2);
-          (1, 2);
+INSERT INTO Instruction(recipe_id, step_number, description)
+  VALUES (3, 1, "Set up Buns"),
+          (3, 2, "Put condiment here"),
+          (3, 3, "Put burger on bun"),
+          (3, 4, "Close bun");
+
+INSERT INTO Instruction(recipe_id, step_number, description)
+  VALUES (4, 1, "Set up Dough"),
+          (4, 2, "Put sauce on dough"),
+          (4, 3, "Put Pepperoni on dough"),
+          (4, 4, "Put cheese on dough"),
+          (4, 5, "Bake");
+
+INSERT INTO Instruction(recipe_id, step_number, description)
+  VALUES (5, 1, "Heat vegetable broth over medium heat until simmering."),
+          (5, 2, "Add nori, leeks, scallions, and tofu. Let simmer 5 more minutes."),
+          (5, 3, "In a small bowl, stir miso paste with just enough water to dilute."),
+          (5, 4, "Add contents of bowl to broth and let simmer a minute or so more.");
+
+INSERT INTO CookingToolsRequired(tool_id, recipe_id)
+  VALUES (5, 4),
+          (2, 4),
+          (3, 3),
+          (3, 2),
+          (1, 5),
+          (3, 1);
 
 INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id)
   VALUES(2, 2),
         (1, 2),
-        (5, 1);
+        (5, 1),
+        (5, 2);
+
+INSERT INTO Meal(meal_name, description, username)
+  VALUES ("Burgers and pizza", "A burger and a pizza", "gordonramsay123"),
+          ("Pizza and Soup", "A pizza and some Japanese Miso Soup", "guyfieri420"),
+          ("Burgers with Focaccia Bread", "Burgers using Focaccia Bread", "spongebob2");
+
+INSERT INTO RecipesInMeals (recipe_id, meal_id)
+  VALUES (3, 1),
+          (4, 1),
+          (1, 2),
+          (5, 2),
+          (4, 3),
+          (2, 3);
 
 SELECT *
 FROM DietaryRestriction;
@@ -244,3 +300,9 @@ FROM IngredientOf;
 
 SELECT *
 FROM Instruction;
+
+SELECT *
+FROM CookingToolsRequired;
+
+SELECT *
+FROM Meal;
