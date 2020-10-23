@@ -136,12 +136,34 @@ INSERT INTO CookingTool (tool_name)
           ("blender");
 
 INSERT INTO User (username, name, password)
-  VALUES ("gordonramsay123", "Gordon Ramsay", "hellskitchen");
+  VALUES ("gordonramsay123", "Gordon Ramsay", "hellskitchen"),
+          ("altonbrown_1", "Alton Brown", "iLik3toCook");
 
 INSERT INTO Recipe (food_type, cuisine_type, recipe_title, username)
   VALUES ("pizza", "italian", "Pizza Margherita on Focaccia", "gordonramsay123"),
+          ("Bread", "italian", "Focaccia", "gordonramsay123"),
           ("Pizza", "Italian", "Pepperoni Pizza", NULL),
-          ("Burger", "America", "Cheeseburger", NULL);
+          ("Burger", "America", "Cheeseburger", NULL),
+          ("Soup", "Japanese", "Miso Soup", "altonbrown_1");
+
+INSERT INTO Ingredient (ingredient_name, recipe_id)
+  VALUES ("Focaccia Bread", NULL),
+          ("Marinara Sauce", NULL),
+          ("Cheese", NULL),
+          ("Tomatoes", NULL),
+          ("Basil", NULL),
+          ("Balsamic Glaze", NULL),
+          ("Flour", NULL),
+          ("Salt", NULL),
+          ("Yeast", NULL),
+          ("Water", NULL),
+          ("Olive Oil", NULL),
+          ("Vegetable Broth", NULL),
+          ("Nori", NULL),
+          ("Leeks", NULL),
+          ("Scallions", NULL),
+          ("Tofu", NULL),
+          ("Miso", NULL);
 
 SELECT *
 FROM DietaryRestriction;
