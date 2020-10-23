@@ -143,6 +143,21 @@ INSERT INTO Recipe (food_type, cuisine_type, recipe_title, username)
           ("Pizza", "Italian", "Pepperoni Pizza", NULL),
           ("Burger", "America", "Cheeseburger", NULL);
 
+
+INSERT INTO Ingredient (ingredient_name, recipe_id)
+    VALUES ("Pepperoni", NULL),
+           ("Dough", NULL),
+           ("Pizza Sauce", NULL),
+           ("Cheese", NULL);
+
+INSERT INTO Ingredient (ingredient_name, recipe_id)
+  VALUES ("Burger meat", NULL),
+          ("Buns", NULL),
+          ("Condiments", NULL),
+          ("Lettuce", NULL);
+
+
+
 SELECT *
 FROM DietaryRestriction;
 
