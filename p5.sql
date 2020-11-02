@@ -332,4 +332,30 @@ FROM Recipe re JOIN Rating ra USING (recipe_id);
 -- replace ("gordonramsay123", "Alton Brown") with variable holding list of names
 SELECT username
 FROM User
-WHERE username IN ("gordonramsay123", "Alton Brown") OR name IN ("gordonramsay123", "Alton Brown")
+WHERE username IN ("gordonramsay123", "Alton Brown") OR name IN ("gordonramsay123", "Alton Brown");
+
+SELECT u1.username, r1.recipe_title, r1.recipe_id
+FROM User u1, Recipe r1
+WHERE u1.username = r1.username;
+
+-- selects users with an average rating higher than a certain number (in this case, 4)
+SELECT u1.username
+FROM User u1, Recipe r1, Rating r2
+WHERE u1.username = r1.username AND r1.recipe_id = r2.recipe_id
+GROUP BY u1.username
+  HAVING AVG(r2.score) >= 4;
+
+-- selects users who have made at least a certan number of this recipes (in this case, at least 2 recipes)
+SELECT u1.username
+FROM User u1 JOIN Recipe r1 USING (username)
+GROUP BY u1.username
+  HAVING COUNT(r1.recipe_id) >= 2;
+
+-- selects ingredient IDs  given keywords
+SELECT ingredient_id, ingredient_name
+FROM Ingredient i
+WHERE ingredient_name IN ("Flour", "Salt", "Yeast");
+
+-- selects top some number of ingredients for some cuisine type (in this case, selects top 5 ingredients used in Japanese Cuisine)
+SELECT ingredient_id, ingredient_name
+FROM IngredientOf i1, Ingredient I2, Recipe
