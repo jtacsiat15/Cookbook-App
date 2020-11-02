@@ -279,8 +279,8 @@ INSERT INTO RecipesInMeals (recipe_id, meal_id)
 
 -- 1) search query
 -- selects all recipe_id, recipe name, user's name, avg(review)
--- 
-SELECT re.recipe_id, re.recipe_title, re.username, AVG(ra.score) 
+--
+SELECT re.recipe_id, re.recipe_title, re.username, AVG(ra.score)
 FROM Recipe re JOIN Rating ra USING (recipe_id);
 
 
@@ -312,8 +312,6 @@ FROM Recipe re JOIN Rating ra USING (recipe_id);
 
 -- 6) query to get contents of recipe - same as 2)
 
-
------------------------------------------
 -- possible other queries
 
 -- top 5 ingredients used in some specified cuisine type
@@ -329,3 +327,9 @@ FROM Recipe re JOIN Rating ra USING (recipe_id);
 
 -- select all meals that include some number of recipes that specifify some specific dietary
 -- restriction
+
+-- selects all usernames where username is in specified list
+-- replace ("gordonramsay123", "Alton Brown") with variable holding list of names
+SELECT username
+FROM User
+WHERE username IN ("gordonramsay123", "Alton Brown") OR name IN ("gordonramsay123", "Alton Brown")
