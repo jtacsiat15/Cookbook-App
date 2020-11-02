@@ -277,6 +277,14 @@ INSERT INTO RecipesInMeals (recipe_id, meal_id)
           (4, 3),
           (2, 3);
 
+SELECT *
+FROM Recipe;
+
+SELECT *
+FROM Ingredient;
+
+SELECT *
+FROM IngredientOf;
 -- 1) search query
 -- selects all recipe_id, recipe name, user's name, avg(review)
 --
@@ -289,14 +297,29 @@ FROM Recipe re JOIN Rating ra USING (recipe_id);
 -- 2.1) select step number and desciption of all instructions corresponding to a
 -- specific recipe_id
 
+SELECT i.step_number, i.description 
+FROM Instruction i JOIN Recipe re USING (recipe_id)
+WHERE re.recipe_id = 4;
 -- 2.2) select ingredient name, amount, and measurement unit, recipe_id for each ingredient used
 -- in a specific recipe
 
+SELECT i.ingredient_name, ig.amount, ig.measurement_units
+FROM IngredientOf ig JOIN Ingredient i using (ingredient_id)
+WHERE ig.recipe_id = 1;
+
 -- 2.3) select restriction name that correspond to recipe_id
 
+SELECT d.restriction_name
+FROM RecipeHasDietaryRestrictions rd JOIN DietaryRestriction d USING (restriction_id)
+WHERE rd.recipe_id = 1;
+
 -- 2.4) select cooking tool names that correspond to recipe_id
+SELECT c.tool_name
+FROM CookingToolsRequired cr JOIN CookingTool c
+WHERE cr.recipe_id = 4;
 
 -- 2.5) select cuisine type, food type, avg rating, user's name
+
 
 -- 3) query for list of meals
 -- select name of meal for specific username (current user)
