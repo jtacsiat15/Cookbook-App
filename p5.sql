@@ -139,14 +139,18 @@ INSERT INTO User (username, name, password)
   VALUES ("gordonramsay123", "Gordon Ramsay", "hellskitchen"),
           ("altonbrown_1", "Alton Brown", "iLik3toCook"),
           ("guyfieri420", "Guy Fieri", "triple_D!"),
-          ("spongebob2", "Spongebob Squarepants", "krustykrab");
+          ("spongebob2", "Spongebob Squarepants", "krustykrab"),
+          ("rat_atouille", "Remy the Rat", "baguette123");
 
 INSERT INTO Recipe (food_type, cuisine_type, recipe_title, username)
-  VALUES ("pizza", "italian", "Pizza Margherita on Focaccia", "gordonramsay123"),
+  VALUES ("Pizza", "italian", "Pizza Margherita on Focaccia", "gordonramsay123"),
           ("Bread", "italian", "Focaccia Bread", "gordonramsay123"),
           ("Pizza", "Italian", "Pepperoni Pizza", "guyfieri420"),
           ("Burger", "America", "Cheeseburger", "spongebob2"),
-          ("Soup", "Japanese", "Miso Soup", "altonbrown_1");
+          ("Soup", "Japanese", "Miso Soup", "altonbrown_1"),
+          ("Sauce", "Japanese", "Teriyaki Sauce", "spongebob2"),
+          ("Ratatouille", "French", "Ratatouille", "rat_atouille"),
+          ("Soup", "French", "Provencial Greens Soup", "rat_atouille");
 
 INSERT INTO Ingredient (ingredient_name, recipe_id)
   VALUES ("Focaccia Bread", NULL),
@@ -171,7 +175,24 @@ INSERT INTO Ingredient (ingredient_name, recipe_id)
           ("Burger meat", NULL),
           ("Buns", NULL),
           ("Condiments", NULL),
-          ("Lettuce", NULL);
+          ("Lettuce", NULL),
+          ("Soy Sauce", NULL),
+          ("Rice Vinegar", NULL),
+          ("Brown Sugar", NULL),
+          ("Sesame Oil", NULL),
+          ("Garlic", NULL),
+          ("Ginger", NULL),
+          ("Cornstarch", NULL),
+          ("Chard", NULL),
+          ("Pepper", NULL),
+          ("Lemon", NULL),
+          ("Egg", NULL),
+          ("Parmesean", NULL),
+          ("Eggplants", NULL),
+          ("Squash", NULL),
+          ("Zucchini", NULL),
+          ("Parsley", NULL),
+          ("Thyme", NULL);
 
 INSERT INTO Rating (score, date_added, username, recipe_id)
   VALUES (5, '2015-04-03', "gordonramsay123", 4),
@@ -179,7 +200,18 @@ INSERT INTO Rating (score, date_added, username, recipe_id)
           (4, '2017-06-12', "altonbrown_1", 2),
           (3, '2018-07-11', "guyfieri420", 2),
           (5, '2019-01-10', "spongebob2", 5),
-          (5, '2020-01-04', "spongebob2", 1);
+          (5, '2020-01-04', "spongebob2", 1),
+          (5, '2017-03-03', "rat_atouille", 6),
+          (3, '2014-04-01', "rat_atouille", 3),
+          (4, '2020-12-04', "altonbrown_1", 6),
+          (2, '2020-12-04', "altonbrown_1", 3),
+          (3, '2020-12-04', "altonbrown_1", 1),
+          (5, '2020-12-04', "spongebob2", 7),
+          (5, '2020-12-04', "spongebob2", 8),
+          (5, '2020-12-04', "gordonramsay123", 7),
+          (5, '2020-12-04', "guyfieri420", 8),
+          (5, '2020-12-04', "altonbrown_1", 7),
+          (5, '2020-12-04', "altonbrown_1", 8);
 
 INSERT INTO IngredientOf (recipe_id, ingredient_id, amount, measurement_units)
   VALUES (2, 7, 3.25, "cups"),
@@ -206,13 +238,52 @@ INSERT INTO IngredientOf(recipe_id, ingredient_id, amount, measurement_units)
           (4, 20, 3, "oz"),
           (4, 3, 2, "slices");
 
+-- miso soup ingredients
 INSERT INTO IngredientOf(recipe_id, ingredient_id, amount, measurement_units)
   VALUES (5, 12, 6, "cups"),
           (5, 13, 1, "sheet"),
           (5, 14, 1, NULL),
           (5, 15, 3, NULL),
           (5, 16, 8, "oz"),
-          (5, 17, 2, "tablespoons");
+          (5, 17, 2, "tablespoons"),
+          (5, 24, 1, "tablespoon"),
+          (5, 25, 1.5, "tablespoons");
+
+-- teriyaki sauce ingredients
+INSERT INTO IngredientOf(recipe_id, ingredient_id, amount, measurement_units)
+  VALUES (6, 24, .5, "cup"),
+          (6, 10, .25, "cup"),
+          (6, 25, 2, "tablespoons"),
+          (6, 26, .25, "cup"),
+          (6, 27, 1, "teaspoon"),
+          (6, 28, 3, "cloves"),
+          (6, 29, 1, "tablespoon"),
+          (6, 30, 1, "tablespoon");
+
+-- provencial greens soup ingredients
+INSERT INTO IngredientOf(recipe_id, ingredient_id, amount, measurement_units)
+  VALUES (7, 11, 2, "tablespoons"),
+          (7, 14, 2, NULL),
+          (7, 28, 4, "cloves"),
+          (7, 8, 2, "teaspoons"),
+          (7, 31, 6, "cups"),
+          (7, 32, .5, "teaspoon"),
+          (7, 10, 6, "cups"),
+          (7, 33, 1, NULL),
+          (7, 34, 2, NULL),
+          (7, 35, .25, "cups");
+
+-- ratatouille ingredients
+INSERT INTO IngredientOf(recipe_id, ingredient_id, amount, measurement_units)
+  VALUES (8, 36, 1, NULL),
+          (8, 4, 5, NULL),
+          (8, 37, 2, NULL),
+          (8, 38, 2, NULL),
+          (8, 2, 3, "cups"),
+          (8, 28, 1, "cloves"),
+          (8, 5, .25, "cup"),
+          (8, 39, 2, "tablespoons"),
+          (8, 40, .25, "cup");
 
 INSERT INTO Instruction (recipe_id, step_number, description)
   VALUES (2, 1, "Whisk together the flour, kosher salt and yeast. Add the warm water to the flour mixture and stir until incorporated."),
@@ -244,11 +315,39 @@ INSERT INTO Instruction(recipe_id, step_number, description)
           (4, 4, "Put cheese on dough"),
           (4, 5, "Bake");
 
+-- miso soup instructions
 INSERT INTO Instruction(recipe_id, step_number, description)
   VALUES (5, 1, "Heat vegetable broth over medium heat until simmering."),
           (5, 2, "Add nori, leeks, scallions, and tofu. Let simmer 5 more minutes."),
           (5, 3, "In a small bowl, stir miso paste with just enough water to dilute."),
           (5, 4, "Add contents of bowl to broth and let simmer a minute or so more.");
+
+-- teriyaki sauce instructions
+INSERT INTO Instruction(recipe_id, step_number, description)
+  VALUES (6, 1, "In a small saucepan over medium heat, add soy sauce, water, rice vinegar, sugar, sesame oil, ginger, and garlic and bring to a simmer."),
+          (6, 2, "Reduce heat and let simmer until reduced by about a third, about 10 minutes."),
+          (6, 3, "In a small bowl, whisk together cornstarch slurry. Pour into sauce slowly while continuously whisking."),
+          (6, 4, "Cook for a minute or so more until it thickens just a little bit more.");
+
+-- provencial greens soup instructions
+INSERT INTO Instruction(recipe_id, step_number, description)
+  VALUES (7, 1, "Heat olive oil in a large sauce pot over medium heat."),
+          (7, 2, "Add the leeks and cook, until tender, 3 to 5 minutes."),
+          (7, 3, "Add the garlic and salt, and cook until the garlic is fragrant, about 1 minute."),
+          (7, 4, "Add greens and pepper, and cook until they begin to wilt."),
+          (7, 5, "Add water, lemon juice and parmesan rind. Reduce heat and simmer, partially covered, for 15 to 20 minutes."),
+          (7, 6, "In a separate bowl, whisk eggs and stir in a ladle of soup broth. Slowly add mixture back into the soup while stirring."),
+          (7, 7, "Serve topped with parmesan shavings.");
+
+-- ratatouille instructions
+INSERT INTO Instruction(recipe_id, step_number, description)
+  VALUES (8, 1, "Preheat oven to 375 °F"),
+          (8, 2, "Add the leeks and cook, until tender, 3 to 5 minutes."),
+          (8, 3, "Add the garlic and salt, and cook until the garlic is fragrant, about 1 minute."),
+          (8, 4, "Add greens and pepper, and cook until they begin to wilt."),
+          (8, 5, "Add water, lemon juice and parmesan rind. Reduce heat and simmer, partially covered, for 15 to 20 minutes."),
+          (8, 6, "In a separate bowl, whisk eggs and stir in a ladle of soup broth. Slowly add mixture back into the soup while stirring.");
+
 
 INSERT INTO CookingToolsRequired(tool_id, recipe_id)
   VALUES (5, 4),
@@ -256,13 +355,17 @@ INSERT INTO CookingToolsRequired(tool_id, recipe_id)
           (3, 3),
           (3, 2),
           (1, 5),
-          (3, 1);
+          (3, 1),
+          (6, 1),
+          (6, 2);
 
 INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id)
   VALUES(2, 2),
         (1, 2),
         (5, 1),
-        (5, 2);
+        (5, 2),
+        (6, 1),
+        (6, 2);
 
 INSERT INTO Meal(meal_name, description, username)
   VALUES ("Burgers and pizza", "A burger and a pizza", "gordonramsay123"),
@@ -339,6 +442,65 @@ SELECT *
 FROM Recipe r JOIN RecipesInMeals re USING (recipe_id)
 WHERE meal_id = 1;
 
+-- All queries below will be used in our search for recipes/meals, where many of these
+-- will eventually be part of more complex queries involving sub
+
+-- selects all usernames where username is in specified list
+-- replace ("gordonramsay123", "Alton Brown") with variable holding list of names
+SELECT username
+FROM User
+WHERE username IN ("gordonramsay123", "Alton Brown") OR name IN ("gordonramsay123", "Alton Brown");
+
+SELECT u1.username, r1.recipe_title, r1.recipe_id
+FROM User u1, Recipe r1
+WHERE u1.username = r1.username;
+
+-- selects users with an average rating higher than a certain number (in this case, 4)
+SELECT u1.username
+FROM User u1, Recipe r1, Rating r2
+WHERE u1.username = r1.username AND r1.recipe_id = r2.recipe_id
+GROUP BY u1.username
+  HAVING AVG(r2.score) >= 4;
+
+-- selects users who have made at least a certan number of
+-- recipes (in this case, at least 2 recipes)
+SELECT u1.username
+FROM User u1 JOIN Recipe r1 USING (username)
+GROUP BY u1.username
+  HAVING COUNT(r1.recipe_id) >= 2;
+
+-- selects ingredient IDs given a list of keywords
+SELECT ingredient_id, ingredient_name
+FROM Ingredient i
+WHERE ingredient_name IN ("Flour", "Salt", "Yeast");
+
+-- selects most common ingredients for some cuisine type
+-- (in this case, selects top 3 ingredients used in Japanese Cuisine)
+SELECT COUNT(i1.ingredient_id), i2.ingredient_name
+FROM IngredientOf i1 JOIN Ingredient i2 ON (i1.ingredient_id = i2.ingredient_id)
+  JOIN Recipe r ON (r.recipe_id = i1.recipe_id)
+WHERE r.cuisine_type = "Japanese"
+GROUP BY i1.ingredient_id
+ORDER BY COUNT(i1.ingredient_id) DESC
+LIMIT 3;
+
+-- selects recipes that have less than a certain number of ingredients
+-- in this case, selects recipes with less than or equal to 5 ingredients
+SELECT recipe_id, recipe_title, COUNT(i.ingredient_id) AS "Amount of Ingredients"
+FROM Recipe r JOIN IngredientOf i USING (recipe_id)
+GROUP BY i.recipe_id
+  HAVING COUNT(i.ingredient_id) <= 5;
+
+-- selects recipes with an average rating higher than some number, in this case,
+-- rating must be higher than 4 stars
+SELECT r.recipe_title AS "Recipe", AVG(ra.score) AS "Rating"
+FROM Recipe r JOIN Rating ra USING (recipe_id)
+GROUP BY ra.recipe_id
+  HAVING AVG(ra.score) > 4
+ORDER BY AVG(ra.score)
+
+-- notes
+
 -- 5) query for list of recipes
 -- select name of recipe for specific username
 
@@ -359,9 +521,3 @@ WHERE meal_id = 1;
 
 -- select all meals that include some number of recipes that specifify some specific dietary
 -- restriction
-
--- selects all usernames where username is in specified list
--- replace ("gordonramsay123", "Alton Brown") with variable holding list of names
-SELECT username
-FROM User
-WHERE username IN ("gordonramsay123", "Alton Brown") OR name IN ("gordonramsay123", "Alton Brown")
