@@ -423,7 +423,6 @@ WHERE cr.recipe_id = 4;
 
 -- 2.5) select cuisine type, food type, avg rating, user's name
 
-
 -- 3) query for list of meals
 -- select name of meal for specific username (current user)
 
@@ -433,29 +432,8 @@ WHERE cr.recipe_id = 4;
 
 -- 4.2) select all recipes corresponding to specific meal
 
--- 5) query for list of recipes
--- select name of recipe for specific username
-
--- 6) query to get contents of recipe - same as 2)
-
--- possible other queries
-
--- top 5 ingredients used in some specified cuisine type
-
--- search for recipes with a rating number that is at least some number
-
--- search for meal that includes certain recipes
-
--- search for meals where average rating of recipes in meal is above a certain number
-
--- search for users where the average rating of the recipes they make is above a certain
--- number and the number of recipes they made is above a certain number.
-
--- select all meals that include some number of recipes that specifify some specific dietary
--- restriction
-
 -- All queries below will be used in our search for recipes/meals, where many of these
--- will eventually be part of more complex queries involving subqueries
+-- will eventually be part of more complex queries involving sub
 
 -- selects all usernames where username is in specified list
 -- replace ("gordonramsay123", "Alton Brown") with variable holding list of names
@@ -510,3 +488,26 @@ FROM Recipe r JOIN Rating ra USING (recipe_id)
 GROUP BY ra.recipe_id
   HAVING AVG(ra.score) > 4
 ORDER BY AVG(ra.score)
+
+-- notes
+
+-- 5) query for list of recipes
+-- select name of recipe for specific username
+
+-- 6) query to get contents of recipe - same as 2)
+
+-- possible other queries
+
+-- top 5 ingredients used in some specified cuisine type
+
+-- search for recipes with a rating number that is at least some number
+
+-- search for meal that includes certain recipes
+
+-- search for meals where average rating of recipes in meal is above a certain number
+
+-- search for users where the average rating of the recipes they make is above a certain
+-- number and the number of recipes they made is above a certain number.
+
+-- select all meals that include some number of recipes that specifify some specific dietary
+-- restriction
