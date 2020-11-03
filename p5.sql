@@ -297,7 +297,7 @@ FROM Recipe re JOIN Rating ra USING (recipe_id);
 -- 2.1) select step number and desciption of all instructions corresponding to a
 -- specific recipe_id
 
-SELECT i.step_number, i.description 
+SELECT i.step_number, i.description
 FROM Instruction i JOIN Recipe re USING (recipe_id)
 WHERE re.recipe_id = 4;
 -- 2.2) select ingredient name, amount, and measurement unit, recipe_id for each ingredient used
@@ -319,16 +319,25 @@ FROM CookingToolsRequired cr JOIN CookingTool c
 WHERE cr.recipe_id = 4;
 
 -- 2.5) select cuisine type, food type, avg rating, user's name
-
+SELECT r.cuisine_type, r.food_type, AVG(ra.score)
+FROM Recipe r JOIN Rating ra USING (recipe_id)
+WHERE r.recipe_id = 1;
 
 -- 3) query for list of meals
 -- select name of meal for specific username (current user)
-
+SELECT m.meal_name
+FROM Meal m JOIN User u USING (username)
+WHERE username = "gordonramsay123";
 -- 4) query to get more info on meals
 
 -- 4.1) select meal name, description, user's name given a meal_id
-
+SELECT meal_name, description, username
+FROM Meal
+WHERE meal_id = 1;
 -- 4.2) select all recipes corresponding to specific meal
+SELECT *
+FROM Recipe r JOIN RecipesInMeals re USING (recipe_id)
+WHERE meal_id = 1;
 
 -- 5) query for list of recipes
 -- select name of recipe for specific username
