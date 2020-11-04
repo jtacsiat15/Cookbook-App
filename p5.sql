@@ -22,6 +22,10 @@ DROP TABLE IF EXISTS User;
 DROP TABLE IF EXISTS CookingTool;
 DROP TABLE IF EXISTS DietaryRestriction;
 
+-- #############################################################################
+-- CREATE TABLE STATEMENTS
+-- #############################################################################
+
 CREATE TABLE DietaryRestriction(
   restriction_id INT UNSIGNED AUTO_INCREMENT,
   restriction_name VARCHAR(50) UNIQUE NOT NULL,
@@ -120,6 +124,10 @@ CREATE TABLE RecipesInMeals(
   FOREIGN KEY (meal_id) REFERENCES Meal(meal_id) ON DELETE CASCADE,
   FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id) ON DELETE CASCADE
 );
+
+-- #############################################################################
+-- Insert Statements
+-- #############################################################################
 
 INSERT INTO DietaryRestriction (restriction_name)
   VALUES ("Vegan"),
@@ -348,7 +356,6 @@ INSERT INTO Instruction(recipe_id, step_number, description)
           (8, 5, "Add water, lemon juice and parmesan rind. Reduce heat and simmer, partially covered, for 15 to 20 minutes."),
           (8, 6, "In a separate bowl, whisk eggs and stir in a ladle of soup broth. Slowly add mixture back into the soup while stirring.");
 
-
 INSERT INTO CookingToolsRequired(tool_id, recipe_id)
   VALUES (5, 4),
           (2, 4),
@@ -380,38 +387,35 @@ INSERT INTO RecipesInMeals (recipe_id, meal_id)
           (4, 3),
           (2, 3);
 
-SELECT *
-FROM Recipe;
+-- #############################################################################
+-- QUERIES
+-- #############################################################################
 
-SELECT *
-FROM Ingredient;
-
-SELECT *
-FROM IngredientOf;
--- 1) search query
+-- 1) Most basic search for recipes, this is the default list that is displayed
 -- selects all recipe_id, recipe name, user's name, avg(review)
---
 SELECT re.recipe_id, re.recipe_title, re.username, AVG(ra.score)
-FROM Recipe re JOIN Rating ra USING (recipe_id);
+FROM Recipe re JOIN Rating ra USING (recipe_id)
+GROUP BY re.recipe_id
+ORDER BY AVG(ra.score);
 
-
--- 2) queries to get recipe details:
+-- #############################################################################
+-- 2) Queries to get recipe details to populate single recipe page in the GUI.
+--    Recipe pages display list of instructions, list of ingredients,
+--    list of dietary restrictions, list of required cooking tools,
 
 -- 2.1) select step number and desciption of all instructions corresponding to a
--- specific recipe_id
-
+--      specific recipe_id
 SELECT i.step_number, i.description
 FROM Instruction i JOIN Recipe re USING (recipe_id)
 WHERE re.recipe_id = 4;
+
 -- 2.2) select ingredient name, amount, and measurement unit, recipe_id for each ingredient used
 -- in a specific recipe
-
 SELECT i.ingredient_name, ig.amount, ig.measurement_units
 FROM IngredientOf ig JOIN Ingredient i using (ingredient_id)
 WHERE ig.recipe_id = 1;
 
 -- 2.3) select restriction name that correspond to recipe_id
-
 SELECT d.restriction_name
 FROM RecipeHasDietaryRestrictions rd JOIN DietaryRestriction d USING (restriction_id)
 WHERE rd.recipe_id = 1;
@@ -421,31 +425,26 @@ SELECT c.tool_name
 FROM CookingToolsRequired cr JOIN CookingTool c
 WHERE cr.recipe_id = 4;
 
--- 2.5) select cuisine type, food type, avg rating, user's name
+-- 2.5) selects title, cuisine type, food type, avg rating, user's name
+SELECT re.recipe_title, re.cuisine_type, re.food_type, AVG(ra.score), re.username
+FROM Recipe re JOIN Rating ra USING (recipe_id)
+WHERE recipe_id = 1
+ORDER BY AVG(ra.score);
 
--- 3) query for list of meals
--- select name of meal for specific username (current user)
+-- #############################################################################
+-- 3) All queries below will be used in our search for recipes, these are various
+-- options a user can use to search by. Some of these will later be incorporated
+-- into sub-queries
 
--- 4) query to get more info on meals
-
--- 4.1) select meal name, description, user's name given a meal_id
-
--- 4.2) select all recipes corresponding to specific meal
-
--- All queries below will be used in our search for recipes/meals, where many of these
--- will eventually be part of more complex queries involving sub
-
--- selects all usernames where username is in specified list
+-- 3.1) selects all usernames where username is in specified list
 -- replace ("gordonramsay123", "Alton Brown") with variable holding list of names
-SELECT username
-FROM User
-WHERE username IN ("gordonramsay123", "Alton Brown") OR name IN ("gordonramsay123", "Alton Brown");
-
+-- this will allow user to put in a list of users they want to find recipes of,
+-- where they can either use the user name or actual name to search
 SELECT u1.username, r1.recipe_title, r1.recipe_id
 FROM User u1, Recipe r1
-WHERE u1.username = r1.username;
+WHERE u1.username IN ("gordonramsay123", "Alton Brown") OR name IN ("gordonramsay123", "Alton Brown");
 
--- selects users with an average rating higher than a certain number (in this case, 4)
+-- 3.2) selects users with an average rating higher than a certain number (in this case, 4)
 SELECT u1.username
 FROM User u1, Recipe r1, Rating r2
 WHERE u1.username = r1.username AND r1.recipe_id = r2.recipe_id
@@ -488,26 +487,3 @@ FROM Recipe r JOIN Rating ra USING (recipe_id)
 GROUP BY ra.recipe_id
   HAVING AVG(ra.score) > 4
 ORDER BY AVG(ra.score)
-
--- notes
-
--- 5) query for list of recipes
--- select name of recipe for specific username
-
--- 6) query to get contents of recipe - same as 2)
-
--- possible other queries
-
--- top 5 ingredients used in some specified cuisine type
-
--- search for recipes with a rating number that is at least some number
-
--- search for meal that includes certain recipes
-
--- search for meals where average rating of recipes in meal is above a certain number
-
--- search for users where the average rating of the recipes they make is above a certain
--- number and the number of recipes they made is above a certain number.
-
--- select all meals that include some number of recipes that specifify some specific dietary
--- restriction
