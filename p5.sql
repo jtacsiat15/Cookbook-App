@@ -424,7 +424,7 @@ WHERE rd.recipe_id = 1;
 SELECT c.tool_name
 FROM CookingToolsRequired cr JOIN CookingTool c
 WHERE cr.recipe_id = 4;
-
+<<<<<<< HEAD
 -- 2.5) selects title, cuisine type, food type, avg rating, user's name
 SELECT re.recipe_title, re.cuisine_type, re.food_type, AVG(ra.score), re.username
 FROM Recipe re JOIN Rating ra USING (recipe_id)
@@ -435,6 +435,22 @@ ORDER BY AVG(ra.score);
 -- 3) All queries below will be used in our search for recipes, these are various
 -- options a user can use to search by. Some of these will later be incorporated
 -- into sub-queries
+
+-- 3) query for list of meals
+-- select name of meal for specific username (current user)
+SELECT m.meal_name
+FROM Meal m JOIN User u USING (username)
+WHERE username = "gordonramsay123";
+-- 4) query to get more info on meals
+
+-- 4.1) select meal name, description, user's name given a meal_id
+SELECT meal_name, description, username
+FROM Meal
+WHERE meal_id = 1;
+-- 4.2) select all recipes corresponding to specific meal
+SELECT *
+FROM Recipe r JOIN RecipesInMeals re USING (recipe_id)
+WHERE meal_id = 1;
 
 -- 3.1) selects all usernames where username is in specified list
 -- replace ("gordonramsay123", "Alton Brown") with variable holding list of names
