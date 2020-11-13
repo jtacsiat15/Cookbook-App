@@ -424,7 +424,7 @@ WHERE rd.recipe_id = 1;
 SELECT c.tool_name
 FROM CookingToolsRequired cr JOIN CookingTool c
 WHERE cr.recipe_id = 4;
-<<<<<<< HEAD
+
 -- 2.5) selects title, cuisine type, food type, avg rating, user's name
 SELECT re.recipe_title, re.cuisine_type, re.food_type, AVG(ra.score), re.username
 FROM Recipe re JOIN Rating ra USING (recipe_id)
@@ -503,3 +503,11 @@ FROM Recipe r JOIN Rating ra USING (recipe_id)
 GROUP BY ra.recipe_id
   HAVING AVG(ra.score) > 4
 ORDER BY AVG(ra.score)
+
+
+
+SELECT COUNT(*)
+FROM category c JOIN film_category fc
+
+WHERE rating = "PG",
+GROUP BY category_id
