@@ -436,22 +436,6 @@ ORDER BY AVG(ra.score);
 -- options a user can use to search by. Some of these will later be incorporated
 -- into sub-queries
 
--- 3) query for list of meals
--- select name of meal for specific username (current user)
-SELECT m.meal_name
-FROM Meal m JOIN User u USING (username)
-WHERE username = "gordonramsay123";
--- 4) query to get more info on meals
-
--- 4.1) select meal name, description, user's name given a meal_id
-SELECT meal_name, description, username
-FROM Meal
-WHERE meal_id = 1;
--- 4.2) select all recipes corresponding to specific meal
-SELECT *
-FROM Recipe r JOIN RecipesInMeals re USING (recipe_id)
-WHERE meal_id = 1;
-
 -- 3.1) selects all usernames where username is in specified list
 -- replace ("gordonramsay123", "Alton Brown") with variable holding list of names
 -- this will allow user to put in a list of users they want to find recipes of,
@@ -504,10 +488,24 @@ GROUP BY ra.recipe_id
   HAVING AVG(ra.score) > 4
 ORDER BY AVG(ra.score)
 
+-- #############################################################################
+-- 4) Queries for meals
 
 
-SELECT COUNT(*)
-FROM category c JOIN film_category fc
+-- 3) query for list of meals
+-- select name of meal for specific username (current user)
+SELECT m.meal_name
+FROM Meal m JOIN User u USING (username)
+WHERE username = "gordonramsay123";
+-- 4) query to get more info on meals
 
-WHERE rating = "PG",
-GROUP BY category_id
+-- 4.1) select meal name, description, user's name given a meal_id
+SELECT meal_name, description, username
+FROM Meal
+WHERE meal_id = 1;
+
+
+-- 4.2) select all recipes corresponding to specific meal
+SELECT *
+FROM Recipe r JOIN RecipesInMeals re USING (recipe_id)
+WHERE meal_id = 1;
