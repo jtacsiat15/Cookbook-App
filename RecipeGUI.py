@@ -1,18 +1,59 @@
 from tkinter import *
-#from PIL import ImageTK, ImageTK
+
+import mysql.connector
+import sys
+import config
 from tkinter import ttk
+import tkinter as tk
+
+usr = config.mysql['user']
+pwd = config.mysql['password']
+hst = config.mysql['host']
+dab = 'asmith37_DB'
+# create a connection
+con = mysql.connector.connect(user=usr,password=pwd, host=hst, database=dab)
+
 root = Tk()
 root.title("Recipes")
-root.geometry("400x400")
+#root.geometry("400x400")
+con.close()
+#MenuBar = ttk.Notebook(root)
+#MenuBar.pack()
+#tab1 = ttk.Frame(MenuBar)
+#MenuBar.add(tab1, text='Recipe Search')
+#tab2 = ttk.Frame(MenuBar)
+#MenuBar.add(tab1, text='Meal Search')
 
-mainframe = ttk.Frame(root, padding="3 3 12 12")
+mainframe = ttk.Frame(root, padding="5 5 12 12")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
 
-login = StringVar()
-ttk.Label(mainframe, textvariable="login").grid(column=2, row=2, sticky=(W, E))
 
-feet = StringVar()
-feet_entry = ttk.Entry(mainframe, width=7, textvariable=feet)
-feet_entry.grid(column=1, row=1, sticky=(W, E))
+#login = StringVar()
+ttk.Label(mainframe, text="login").grid(column=3, row=1)
+
+username = StringVar()
+name = ttk.Entry(mainframe, textvariable=username)
+name.grid(column = 3, row=2)
+
+#loginUsername = username.get()
+#rs = con.cursor()
+#query = '''SELECT COUNT(*)
+#            FROM user 
+#            WHERE username = %s'''
+#rs.execute(query, (loginUsername))
+
+
+def login():
+    loginUsername = username.get()
+    print(loginUsername)
+    rs = con.cursor()
+    query = '''SELECT COUNT(*)
+                FROM user 
+                WHERE username = %s'''
+    rs.execute(query, (loginUsername)) 
+
+ttk.Button(mainframe, text="login", command=login).grid(column=3, row=3, sticky=(W,E))
 
 root.mainloop()
