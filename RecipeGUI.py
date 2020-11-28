@@ -23,7 +23,7 @@ root.title("Recipes")
 
 root.geometry("500x500")
 
-ttk.Label(root, text="Login").grid(column=3, row=1)
+"""ttk.Label(root, text="Login").grid(column=3, row=1)
 
 username = StringVar()
 name = ttk.Entry(root, textvariable=username)
@@ -31,7 +31,7 @@ name.grid(column = 3, row=2)
 
 password = StringVar()
 name = ttk.Entry(root, textvariable=password)
-name.grid(column = 3, row=3)
+name.grid(column = 3, row=3)"""
 
 """def login():
     loginUsername = username.get()
@@ -79,7 +79,26 @@ my_notebook.add(mealSearchFrame, text = "Meal Search")
 my_notebook.add(profileFrame, text = "Profile")
 
 
+#display the meal list
 
+def go(event): 
+    print("here")
+    mealName = mealList.get(mealList.curselection())
+    print(mealName)
+
+mealList = Listbox(mealSearchFrame, width = 40)
+rs = con.cursor()
+getMealNames = '''SELECT meal_name
+                    FROM Meal'''
+rs.execute(getMealNames)
+count = 0
+for meal in rs:
+    count += 1
+    mealList.insert(count, str(meal)[2:-3])
+
+mealList.bind('<Double-1>', go)
+
+mealList.pack()
 
 #login = StringVar()
 """ttk.Label(profileFrame, text="Login").grid(column=3, row=1)
