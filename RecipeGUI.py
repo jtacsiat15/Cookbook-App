@@ -182,6 +182,7 @@ def search():
     count = 0
 
     for (title, id) in rs:
+        count += 1
         recipeList.insert(count, str(title))
 
     recipeList.pack()
