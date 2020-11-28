@@ -174,13 +174,40 @@ def search():
 
     rs = con.cursor()
     rs.execute(query)
+    result_window = tk.TopLevel(root)
+    result_window.title("Results")
+
+    recipeList = Listbox(result_window, width = 40)
+
+    count = 0
 
     for (title, id) in rs:
-        print(title, ", ", id)
+        recipeList.insert(count, str(title))
+
+    recipeList.pack()
+
 
 
 searchButton = ttk.Button(recipeFrame, text="Search", command=search).grid(column=2, row=6)
 
+def go(event):
+    print("here")
+    mealName = mealList.get(mealList.curselection())
+    print(mealName)
+
+mealList = Listbox(mealSearchFrame, width = 40)
+rs = con.cursor()
+getMealNames = '''SELECT meal_name
+                    FROM Meal'''
+rs.execute(getMealNames)
+count = 0
+for meal in rs:
+    count += 1
+    mealList.insert(count, str(meal)[2:-3])
+
+mealList.bind('<Double-1>', go)
+
+mealList.pack()
 
 #login = StringVar()
 """ttk.Label(profileFrame, text="Login").grid(column=3, row=1)
