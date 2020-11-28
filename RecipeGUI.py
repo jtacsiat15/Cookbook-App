@@ -21,7 +21,7 @@ root.title("Recipes")
 #MenuBar = ttk.Notebook(root)
 #MenuBar.pack()
 
-root.geometry("500x500")
+root.geometry("700x500")
 """
 ttk.Label(root, text="Login").grid(column=3, row=1)
 
@@ -68,9 +68,9 @@ ttk.Button(root, text="login", command=login).grid(column=3, row=4, sticky=(W,E)
 my_notebook = ttk.Notebook(root)
 my_notebook.pack()
 
-recipeFrame = Frame(my_notebook, width= 500, height = 500)
-mealSearchFrame = Frame(my_notebook, width= 500, height = 500)
-profileFrame = Frame(my_notebook, width= 500, height = 500)
+recipeFrame = Frame(my_notebook, width= 700, height = 500)
+mealSearchFrame = Frame(my_notebook, width= 700, height = 500)
+profileFrame = Frame(my_notebook, width= 700, height = 500)
 
 recipeFrame.pack(fill = "both", expand = 1)
 mealSearchFrame.pack(fill = "both", expand = 1)
@@ -81,27 +81,27 @@ my_notebook.add(mealSearchFrame, text = "Meal Search")
 my_notebook.add(profileFrame, text = "Profile")
 
 usernameLabel = ttk.Label(recipeFrame, text="Enter usernames (separated by commas):").grid(column=1, row=1)
-usernameField = ttk.Entry(recipeFrame, width = 20)
+usernameField = ttk.Entry(recipeFrame, width = 40)
 usernameField.grid(column=2, row = 1)
 
 IngredientLabel = ttk.Label(recipeFrame, text="Enter ingredients (separated by commas):").grid(column=1, row=2)
-IngredientField = ttk.Entry(recipeFrame, width = 20)
+IngredientField = ttk.Entry(recipeFrame, width = 40)
 IngredientField.grid(column=2, row = 2)
 
 toolLabel = ttk.Label(recipeFrame, text="Enter cooking tools (separated by commas):").grid(column=1, row=3)
-toolField = ttk.Entry(recipeFrame, width = 20)
+toolField = ttk.Entry(recipeFrame, width = 40)
 toolField.grid(column=2, row = 3)
 
 toolLabel = ttk.Label(recipeFrame, text="Enter cooking tools (separated by commas):").grid(column=1, row=3)
-toolField = ttk.Entry(recipeFrame, width = 20)
+toolField = ttk.Entry(recipeFrame, width = 40)
 toolField.grid(column=2, row = 3)
 
 dietLabel = ttk.Label(recipeFrame, text="Enter dietary restrictions (separated by commas):").grid(column=1, row=4)
-dietField = ttk.Entry(recipeFrame, width = 20)
+dietField = ttk.Entry(recipeFrame, width = 40)
 dietField.grid(column=2, row = 4)
 
 cuisineLabel = ttk.Label(recipeFrame, text="Enter cuisine type (separated by commas):").grid(column=1, row=5)
-cuisineField = ttk.Entry(recipeFrame, width = 20)
+cuisineField = ttk.Entry(recipeFrame, width = 40)
 cuisineField.grid(column=2, row = 5)
 
 def search():
@@ -174,10 +174,10 @@ def search():
 
     rs = con.cursor()
     rs.execute(query)
-    result_window = tk.TopLevel(root)
-    result_window.title("Results")
+    #result_window = tk.TopLevel(root)
+    #result_window.title("Results")
 
-    recipeList = Listbox(result_window, width = 40)
+    recipeList = Listbox(recipeFrame, width = 40)
 
     count = 0
 
@@ -185,7 +185,7 @@ def search():
         count += 1
         recipeList.insert(count, str(title))
 
-    recipeList.pack()
+    recipeList.grid(column = 1, row = 8, columnspan = 2)
 
 
 
