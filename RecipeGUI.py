@@ -23,6 +23,46 @@ root.title("Recipes")
 
 root.geometry("500x500")
 
+ttk.Label(root, text="Login").grid(column=3, row=1)
+
+username = StringVar()
+name = ttk.Entry(root, textvariable=username)
+name.grid(column = 3, row=2)
+
+password = StringVar()
+name = ttk.Entry(root, textvariable=password)
+name.grid(column = 3, row=3)
+
+"""def login():
+    loginUsername = username.get()
+    loginPassword = password.get()
+    print(loginUsername)
+    print(loginPassword)
+    rs = con.cursor()
+    getPassword = '''SELECT password
+                FROM User 
+                WHERE username = "%s"'''
+    
+    rs.execute(getPassword % (loginUsername))
+    row = rs.fetchone()
+    if row is not None:
+        print(row[0])
+        if (row[0] == loginPassword):
+            print("login successful")
+        else:
+            print("incorrect password")
+    else:
+        print("incorrect username")
+    #getPassword = '''SELECT Password
+    #                    FROM User
+    #                    WHERE username = "%s"'''
+
+    #rs.execute(getPassword % (loginUsername))
+
+
+ttk.Button(root, text="login", command=login).grid(column=3, row=4, sticky=(W,E))"""
+
+#def runApp():
 my_notebook = ttk.Notebook(root)
 my_notebook.pack()
 
@@ -42,7 +82,7 @@ my_notebook.add(profileFrame, text = "Profile")
 
 
 #login = StringVar()
-ttk.Label(profileFrame, text="Login").grid(column=3, row=1)
+"""ttk.Label(profileFrame, text="Login").grid(column=3, row=1)
 
 username = StringVar()
 name = ttk.Entry(profileFrame, textvariable=username)
@@ -57,7 +97,7 @@ def login():
                 WHERE username = "%s"'''
     rs.execute(query % (loginUsername))
 
-ttk.Button(profileFrame, text="login", command=login).grid(column=3, row=3, sticky=(W,E))
+ttk.Button(profileFrame, text="login", command=login).grid(column=3, row=3, sticky=(W,E))"""
 
 
 
