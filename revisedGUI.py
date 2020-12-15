@@ -357,28 +357,39 @@ class RecipePage:
 class MealPage:
     myFrame = None
     mealList = None
+    idList = []
 
     def __init__(self, master, user):
         self.myFrame = master
 
         self.mealList = Listbox(self.myFrame, width = 40)
         rs = con.cursor()
-        getMealNames = '''SELECT meal_name
+        getMealNames = '''SELECT meal_name, meal_id
                             FROM Meal'''
         rs.execute(getMealNames)
         count = 0
-        for meal in rs:
+        for meal, id in rs:
             count += 1
-            self.mealList.insert(count, str(meal)[2:-3])
+            self.mealList.insert(count, str(meal))
 
-        self.mealList.bind('<Double-1>', go)
+        self.mealList.bind('<Double-1>', self.go)
 
         self.mealList.pack()
 
-def go(self, event):
-    print("here")
-    mealName = self.mealList.get(mealList.curselection())
-    print(mealName)
+    def go(self, event):
+        print("here")
+        mealName = self.mealList.get(self.mealList.curselection())
+        d = DisplayMeal(mealName)
+        print(mealName)
+
+class DisplayMeal:
+    myFrame = None
+
+    def __init__(self, mealName):
+        self.myFrame = Tk()
+        self.myFrame.title("Meal")
+        self.myFrame.geometry("250x150")
+
 
 class ProfilePage:
     myFrame = None
