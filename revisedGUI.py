@@ -357,12 +357,13 @@ class RecipePage:
 class MealPage:
     myFrame = None
     mealList = None
+    mealName = None
     idList = []
 
-    def go(self, event):
+    '''def go(self, event):
         print("here")
         mealName = self.mealList.get(mealList.curselection())
-        print(mealName)
+        print(mealName)'''
 
     def __init__(self, master, user):
         self.myFrame = master
@@ -383,29 +384,63 @@ class MealPage:
         self.mealList.pack()
 
     def go(self, event):
-        print("here")
+        print("here in meal doubleClick")
 
         id_index = self.mealList.curselection()[0]
-        meal_id = idList[id_index]
+        meal_id = self.idList[id_index]
 
+        print(meal_id)
+        #print(mealName)
         d = DisplayMeal(meal_id)
-        print(mealName)
+        
+        
 
 class DisplayMeal:
     myFrame = None
-
     # meal info to be displayed
     recipeList = None
-    idList = []
+    idListArray = []
 
 
     def __init__(self, meal_id):
         self.myFrame = Tk()
         self.myFrame.title("Meal")
-        self.myFrame.geometry("250x150")
-
+        self.myFrame.geometry("350x350")
+        print(meal_id)
+        self.recipeList = Listbox(self.myFrame, width = 40)
+        rs = con.cursor()
         # execute query to get meal info
+        getRecipeIds = "SELECT recipe_id FROM RecipesInMeals WHERE meal_id = {}".format(meal_id)
+        rs.execute(getRecipeIds, (meal_id))
 
+
+        count = 0
+        for recipe_id in rs:
+            print(recipe_id)
+            self.idListArray.append(recipe_id[0])
+            #count += 1
+            #self.recipeList.insert(count, str(recipe_id[0]))
+        
+        for recipe_id in self.idListArray:
+            rs = con.cursor()
+            getRecipe = '''SELECT recipe_title, recipe_id
+                            FROM Recipe
+                            WHERE recipe_id = {}'''.format(recipe_id)
+            rs.execute(getRecipe, (recipe_id))
+            for recipe in rs:
+                count +=1
+                self.recipeList.insert(count, str(recipe))
+                
+
+            
+
+
+        #do query to get the 
+        '''for recipe_id in idList:
+            #get recipes information
+            getRecipe = '''
+        
+        self.recipeList.pack()
 
     def go(self, event):
 
