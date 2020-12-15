@@ -374,6 +374,7 @@ class MealPage:
         rs.execute(getMealNames)
         count = 0
         for meal, id in rs:
+            self.idList.append(id)
             count += 1
             self.mealList.insert(count, str(meal))
 
@@ -383,17 +384,36 @@ class MealPage:
 
     def go(self, event):
         print("here")
-        mealName = self.mealList.get(self.mealList.curselection())
-        d = DisplayMeal(mealName)
+
+        id_index = self.mealList.curselection()[0]
+        meal_id = idList[id_index]
+
+        d = DisplayMeal(meal_id)
         print(mealName)
 
 class DisplayMeal:
     myFrame = None
 
-    def __init__(self, mealName):
+    # meal info to be displayed
+    recipeList = None
+    idList = []
+
+
+    def __init__(self, meal_id):
         self.myFrame = Tk()
         self.myFrame.title("Meal")
         self.myFrame.geometry("250x150")
+
+        # execute query to get meal info
+
+
+    def go(self, event):
+
+        # destroy everything in current frame so that recipe info can be built on top
+        for widget in self.myFrame.winfo_children():
+            widget.destroy()
+
+        #r = DisplayMeal(myFrame, recipe_id)
 
 class ProfilePage:
     myFrame = None
