@@ -358,6 +358,11 @@ class MealPage:
     myFrame = None
     mealList = None
 
+    def go(self, event):
+        print("here")
+        mealName = self.mealList.get(mealList.curselection())
+        print(mealName)
+
     def __init__(self, master, user):
         self.myFrame = master
 
@@ -370,15 +375,13 @@ class MealPage:
         for meal in rs:
             count += 1
             self.mealList.insert(count, str(meal)[2:-3])
-
+        
         self.mealList.bind('<Double-1>', go)
-
         self.mealList.pack()
 
-def go(self, event):
-    print("here")
-    mealName = self.mealList.get(mealList.curselection())
-    print(mealName)
+        
+
+    
 
 class ProfilePage:
     myFrame = None
