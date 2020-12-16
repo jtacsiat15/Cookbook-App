@@ -27,6 +27,12 @@ class MealPage:
     def __init__(self, master, user):
         self.myFrame = master
 
+        usernameLabel = ttk.Label(self.myFrame, text="Enter usernames (separated by commas):").grid(column=1, row=1)
+        self.usernameField = ttk.Entry(self.myFrame, width = 40)
+        self.usernameField.grid(column=2, row = 1)
+
+        searchButton = ttk.Button(self.myFrame, text="Search", command=self.search).grid(column=1, row=2, columnspan=2)
+
         self.mealList = Listbox(self.myFrame, width = 40)
         rs = con.cursor()
         getMealNames = '''SELECT meal_name, meal_id
@@ -40,7 +46,24 @@ class MealPage:
 
         self.mealList.bind('<Double-1>', self.go)
 
-        self.mealList.pack()
+        self.mealList.grid(column=2, row = 3)
+
+
+    def search(self):
+        query = ""
+
+        usernames = self.usernameField.get()
+        if(usernames != ""):
+            users = usernames.split(",")
+            usernameInput = str([u.lstrip().rstrip() for u in users])
+            usernameInput = usernameInput[1:-1]
+            q = '''SELECT m1.meal_name, m1.meal_id
+                    FROM User u1 JOIN Meal m1 ON (m1.username = m1.username)
+                    WHERE u1.username IN ({users}) OR u1.name IN ({users})'''.format(users = usernameInput)
+            query += q
+
+        rs = con.cursor()
+        rs.execute(query)
 
     def go(self, event):
         print("here in meal doubleClick")
