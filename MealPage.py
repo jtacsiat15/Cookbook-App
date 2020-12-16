@@ -32,7 +32,7 @@ class MealPage:
         self.usernameField.grid(column=2, row = 1)
 
         searchButton = ttk.Button(self.myFrame, text="Search", command=self.search).grid(column=1, row=2, columnspan=2)
-
+        """
         self.mealList = Listbox(self.myFrame, width = 40)
         rs = con.cursor()
         getMealNames = '''SELECT meal_name, meal_id
@@ -47,7 +47,7 @@ class MealPage:
         self.mealList.bind('<Double-1>', self.go)
 
         self.mealList.grid(column=2, row = 3)
-
+        """
 
     def search(self):
         query = ""
@@ -65,6 +65,20 @@ class MealPage:
         rs = con.cursor()
         rs.execute(query)
 
+        self.mealList = Listbox(self.myFrame, width = 40)
+        count = 0
+        for meal, id in rs:
+            self.idList.append(id)
+            count += 1
+            self.mealList.insert(count, str(meal))
+
+        self.mealList.bind('<Double-1>', self.go)
+
+        self.mealList.grid(column=2, row = 3)
+
+
+
+
     def go(self, event):
         print("here in meal doubleClick")
 
@@ -74,6 +88,7 @@ class MealPage:
         print(meal_id)
         #print(mealName)
         d = DisplayMeal(meal_id)
+
 
 
 
@@ -90,35 +105,38 @@ class DisplayMeal:
         self.myFrame.geometry("350x350")
         print(meal_id)
         self.recipeList = Listbox(self.myFrame, width = 40)
+
         rs = con.cursor()
         # execute query to get meal info
         getRecipeIds = "SELECT recipe_id FROM RecipesInMeals WHERE meal_id = {}".format(meal_id)
         rs.execute(getRecipeIds, (meal_id))
-
-
         count = 0
+        self.idListArray.clear()
         for recipe_id in rs:
             print(recipe_id)
             self.idListArray.append(recipe_id[0])
             #count += 1
             #self.recipeList.insert(count, str(recipe_id[0]))
 
+        self.recipeList.delete(0, self.recipeList.size())
+        print("past clear list")
+        print(self.recipeList.size())
         for recipe_id in self.idListArray:
             rs = con.cursor()
             getRecipe = '''SELECT recipe_title, recipe_id
                             FROM Recipe
                             WHERE recipe_id = {}'''.format(recipe_id)
-            rs.execute(getRecipe, (recipe_id))
+            rs.execute(getRecipe)
             for recipe in rs:
                 count +=1
-                self.recipeList.insert(count, str(recipe))
-
+                self.recipeList.insert(count, str(recipe[0]))
         #do query to get the
         '''for recipe_id in idList:
             #get recipes information
             getRecipe = '''
-
+        print(self.recipeList.size)
         self.recipeList.pack()
+
 
     def go(self, event):
 
