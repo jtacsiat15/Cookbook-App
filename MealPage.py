@@ -14,41 +14,47 @@ dab = 'asmith37_DB'
 con = mysql.connector.connect(user=usr,password=pwd, host=hst, database=dab)
 
 class MealPage:
-    myFrame = None
-    mealList = None
-    mealName = None
-    idList = []
 
-    '''def go(self, event):
+    def go(self, event):
         print("here")
         mealName = self.mealList.get(mealList.curselection())
-        print(mealName)'''
+        print(mealName)
 
     def __init__(self, master, user):
         self.myFrame = master
 
-        usernameLabel = ttk.Label(self.myFrame, text="Enter usernames (separated by commas):").grid(column=1, row=1)
-        self.usernameField = ttk.Entry(self.myFrame, width = 40)
-        self.usernameField.grid(column=2, row = 1)
+        ratingLabel = ttk.Label(self.myFrame, text="Must have an average rating of: ").grid(column=1, row=1)
+        self.ratingField = ttk.Entry(self.myFrame, width = 40).grid(column=2, row = 1)
 
-        searchButton = ttk.Button(self.myFrame, text="Search", command=self.search).grid(column=1, row=2, columnspan=2)
-        """
-        self.mealList = Listbox(self.myFrame, width = 40)
-        rs = con.cursor()
-        getMealNames = '''SELECT meal_name, meal_id
-                            FROM Meal'''
-        rs.execute(getMealNames)
-        count = 0
-        for meal, id in rs:
-            self.idList.append(id)
-            count += 1
-            self.mealList.insert(count, str(meal))
+        foodLabel = ttk.Label(self.myFrame, text="Enter food types to include (separated by commas):").grid(column=1, row=2)
+        self.foodField = ttk.Entry(self.myFrame, width = 40).grid(column=2, row = 2)
 
-        self.mealList.bind('<Double-1>', self.go)
+        dietFrame = Frame(self.myFrame)
+        dietLabel1 = ttk.Label(dietFrame, text="Include at least").pack(side=LEFT)
+        self.dietAmountField = ttk.Entry(dietFrame, width = 2).pack(side=LEFT)
+        dietLabel2 = ttk.Label(dietFrame, text="recipes with dietary restriction (separated by commas): ").pack(side=LEFT)
+        dietFrame.grid(column=1, row=3)
+        self.dietField = ttk.Entry(self.myFrame, width = 40).grid(column=2, row = 3)
 
-        self.mealList.grid(column=2, row = 3)
-        """
+        cuisineFrame = Frame(self.myFrame)
+        cuisineLabel1 = ttk.Label(cuisineFrame, text="Include at least").pack(side=LEFT)
+        self.cuisineAmountField = ttk.Entry(cuisineFrame, width = 2).pack(side=LEFT)
+        cuisineLabel2 = ttk.Label(cuisineFrame, text="recipes with cuisine type (separated by commas): ").pack(side=LEFT)
+        cuisineFrame.grid(column=1, row=4)
+        self.cuisineField = ttk.Entry(self.myFrame, width = 40).grid(column=2, row = 4)
 
+        amountFrame = Frame(self.myFrame)
+        recipeAmountLabel1 = ttk.Label(amountFrame, text="Number of recipes in meal must be between").pack(side=LEFT)
+        self.recipeMinField = ttk.Entry(amountFrame, width = 2).pack(side=LEFT)
+        cuisineLabel2 = ttk.Label(amountFrame, text="and").pack(side=LEFT)
+        self.recipeMaxField = ttk.Entry(amountFrame, width = 2).pack(side=LEFT)
+        amountFrame.grid(column=1, row=5)
+
+        usernameLabel = ttk.Label(self.myFrame, text="Recipes in meal must be made by (enter users, separated by commas):").grid(column=1, row=6)
+        self.usernameField = ttk.Entry(self.myFrame, width = 40).grid(column=2, row = 6)
+
+        searchButton = ttk.Button(self.myFrame, text="Search", command=self.search).grid(column=1, row=7, columnspan=2)
+        
     def search(self):
         query = ""
 
