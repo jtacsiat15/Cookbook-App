@@ -33,8 +33,8 @@ class YourRecipes:
 
     def __init__(self, master, user):
         self.myFrame = master
-        self.recipeLabel = ttk.Button(self.myFrame, text="Add Recipe")
-        self.recipeLabel.grid(column = 1, row = 1)
+        self.recipeButton = ttk.Button(self.myFrame, text="Add Recipe")
+        self.recipeButton.grid(column = 1, row = 1)
 
         query = '''SELECT recipe_title, recipe_id
                     FROM Recipe
@@ -50,12 +50,24 @@ class YourRecipes:
 
         self.recipeList.grid(column = 1, row = 2)
 
-
-
 class YourMeals:
     myFrame = None
 
     def __init__(self, master, user):
         self.myFrame = master
-        self.mealLabel = ttk.Button(self.myFrame, text="Add Meal")
-        self.mealLabel.pack()
+        self.mealButton = ttk.Button(self.myFrame, text="Add Meal")
+        self.mealButton.grid(column = 1, row = 1)
+
+        query = '''SELECT meal_name, meal_id
+                    FROM Meal
+                    WHERE username = "{input}"'''.format(input = user)
+        rs = con.cursor()
+        rs.execute(query)
+        self.mealList = Listbox(self.myFrame, width = 40)
+
+        count = 0
+        for title, id in rs:
+            count+=1
+            self.mealList.insert(count, title)
+
+        self.mealList.grid(column = 1, row = 2)
