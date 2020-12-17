@@ -141,6 +141,7 @@ class AddRecipe:
 
         if(recipeTitle == ""):
             e = Error("Must provide a recipe name")
+            return 0
         cuisineType = self.cuisineEntry.get()
         foodType = self.foodEntry.get()
 
@@ -156,6 +157,7 @@ class AddRecipe:
 
         if(len(ingredientList) == 0):
             e = Error("Must provide at least one ingredient")
+            return 0
 
         instructions = []
         for i in range(10):
@@ -165,6 +167,7 @@ class AddRecipe:
 
         if(len(ingredientList) == 0):
             e = Error("Must provide at least one instruction")
+            return 0
 
         restrictions = []
         for i in range(6):
@@ -182,14 +185,12 @@ class AddRecipe:
         #format coming in
         #(food_type, cuisine_type, recipe_title, username)
         rs = con.cursor()
-        #recipeInfo = ("pasta", "italian", "eu pasta", self.currUser)
         insert = '''INSERT INTO Recipe (food_type, cuisine_type, recipe_title, username)
                     VALUES ("{}","{}","{}","{}")'''.format(recipeInfo[0], recipeInfo[1], recipeInfo[2], recipeInfo[3])
 
         rs.execute(insert)
         con.commit()
         print("after insert and commit")
-        #ingredientList = [("butter", 1, "cup"), ("salt", 1, "tbsp"), ("cinnamon", 2, "tbsp")]
         #query to insert a recipe
         #get recipe id
         getRecipeId = '''SELECT recipe_id FROM Recipe WHERE recipe_title = "{}"'''.format(recipeInfo[2])
@@ -200,7 +201,6 @@ class AddRecipe:
             recipeId = result
 
         print(recipeId)
-        ingredientList = [("parmesean", .5, "cups"), ("pasta", 1, "box"), ("marinara", 4, "cups"), ("salt", 2, "tsp")]
         for ingredient in ingredientList:
             searchQuery = '''SELECT ingredient_id FROM Ingredient WHERE LOWER(ingredient_name) = LOWER("{}")'''.format(ingredient[0])
             rs.execute(searchQuery)
@@ -236,13 +236,12 @@ class AddRecipe:
         #for ingredient_id in ingredientIdList:
         #code to add instructions
         #added instruction comments
-        #instructions = [(1, "1i"),(2, "2i"),(3, "3i")]
         for instruction in instructions:
             insertInstruction = '''INSERT INTO Instruction (recipe_id, step_number, description)
                                         VALUES ({}, {}, "{}")'''.format(recipeId[0], instruction[0], instruction[1])
             rs.execute(insertInstruction)
             con.commit()
-        
+
         #add dietary restrictions
         #restrictions.append("carnivore")
         #restrictions.append("omnivore")
@@ -254,7 +253,7 @@ class AddRecipe:
             print(row)
             if row is not None:
                 print("dietary restriction already exists")
-                '''insertRestrictionToRecipe = INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id) 
+                '''insertRestrictionToRecipe = INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id)
                                                     VALUES ({}, {}).format(recipeId[0], row[0])
                 rs.execute(insertRestrictionToRecipe)
                 con.commit()'''
@@ -268,13 +267,12 @@ class AddRecipe:
                 rs.execute(searchQuery)
                 restrictionId = rs.fetchone()
 
-                insertRestrictionToRecipe = '''INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id) 
+                insertRestrictionToRecipe = '''INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id)
                                                     VALUES ({}, {})'''.format(recipeId[0], restrictionId[0])
                 rs.execute(insertRestrictionToRecipe)
                 con.commit()
 
 
-        tools = ["pot", "toaster", "knife"]
         for tool in tools:
             query = ''' SELECT tool_id
                         FROM CookingTool
@@ -298,8 +296,6 @@ class AddRecipe:
             rs.execute(query)
             con.commit()
 
-
-            restrictions = ["vegan", "keto"]
             for restriction in restrictions:
                 query = ''' SELECT restriction_id
                             FROM DietaryRestriction
