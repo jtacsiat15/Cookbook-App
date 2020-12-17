@@ -235,9 +235,9 @@ class MainProgram:
         my_notebook.add(mealSearchFrame, text = "Meal Search")
         my_notebook.add(profileFrame, text = "Profile")
 
-        r = RecipePage(recipeFrame, user)
-        m = MealPage(mealSearchFrame, user)
-        p = ProfilePage(profileFrame, user)
+        r = RecipePage(recipeFrame, self.currentUser)
+        m = MealPage(mealSearchFrame, self.currentUser)
+        p = ProfilePage(profileFrame, self.currentUser)
 
 
 l = LoginOrSignUp(root)
