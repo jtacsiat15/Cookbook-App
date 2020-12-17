@@ -180,8 +180,6 @@ class DisplayMeal:
             mealDescription = Label(self.myFrame, text = mealInfo[1])
             mealDescription.pack()
 
-
-
         # execute query to get meal info
         getRecipeIds = "SELECT recipe_id FROM RecipesInMeals WHERE meal_id = {}".format(meal_id)
         rs.execute(getRecipeIds, (meal_id))

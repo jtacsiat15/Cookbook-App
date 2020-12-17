@@ -143,7 +143,7 @@ class DisplayRecipe:
         #SELECT r.title, r.id FROM
         #(SELECT r1.recipe_title AS title, r1.recipe_id AS id
         #FROM Recipe r1 '''
-        
+
         query = '''SELECT recipe_title, cuisine_type, food_type
                     FROM Recipe
                     WHERE recipe_id = {}'''.format(recipe_id)
@@ -187,7 +187,6 @@ class DisplayRecipe:
             instructionCount += 1
             instructionsList.insert(instructionCount, instruction)
         instructionsList.pack()
-
 
 
         #display instructions
