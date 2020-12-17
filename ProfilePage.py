@@ -70,6 +70,20 @@ class YourMeals:
 
     def __init__(self, master, user):
         self.myFrame = master
-        self.mealLabel = ttk.Button(self.myFrame, text="Add Meal")
-        self.mealLabel.pack()
+        self.mealButton = ttk.Button(self.myFrame, text="Add Meal")
+        self.mealButton.grid(column = 1, row = 1)
+
+        # query
+        query = '''SELECT meal_name, meal_id
+                    FROM Meal
+                    WHERE username = "{input}"'''.format(input = user)
+        rs = con.cursor()
+        rs.execute(query)
+        self.mealList = Listbox(self.myFrame, width = 40)
+
+        count = 0
+        for title, id in rs:
+            count+=1
+            self.mealList.insert(count, title)
+        self.mealList.grid(column = 1, row = 2)
 
