@@ -6,6 +6,7 @@ import config
 from tkinter import ttk
 import tkinter as tk
 
+
 usr = config.mysql['user']
 pwd = config.mysql['password']
 hst = config.mysql['host']
