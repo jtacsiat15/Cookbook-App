@@ -242,6 +242,37 @@ class AddRecipe:
             rs.execute(insertInstruction)
             con.commit()
 
+        #add dietary restrictions
+        #restrictions.append("carnivore")
+        #restrictions.append("omnivore")
+        #restrictions =["r6", "r5", "vegan5"]
+        for restriction in restrictions:
+            searchQuery = '''SELECT restriction_id FROM DietaryRestriction WHERE LOWER(restriction_name) = LOWER("{}")'''.format(restrictions[0])
+            rs.execute(searchQuery)
+            row = rs.fetchone()
+            print(row)
+            if row is not None:
+                print("dietary restriction already exists")
+                '''insertRestrictionToRecipe = INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id)
+                                                    VALUES ({}, {}).format(recipeId[0], row[0])
+                rs.execute(insertRestrictionToRecipe)
+                con.commit()'''
+            else:
+                insertRestrictionQuery = '''INSERT INTO DietaryRestriction (restriction_name)
+                                                VALUES ("{}")'''.format(restrictions[0])
+                rs.execute(insertRestrictionQuery)
+                con.commit()
+
+                searchQuery = '''SELECT restriction_id FROM DietaryRestriction WHERE LOWER(restriction_name) = LOWER("{}")'''.format(restrictions[0])
+                rs.execute(searchQuery)
+                restrictionId = rs.fetchone()
+
+                insertRestrictionToRecipe = '''INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id)
+                                                    VALUES ({}, {})'''.format(recipeId[0], restrictionId[0])
+                rs.execute(insertRestrictionToRecipe)
+                con.commit()
+
+
         for tool in tools:
             query = ''' SELECT tool_id
                         FROM CookingTool
