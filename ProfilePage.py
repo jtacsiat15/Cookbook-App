@@ -56,12 +56,73 @@ class YourRecipes:
 class AddRecipe:
     myFrame = None
     currUser = None
+    ingredientIdList = []
     def __init__(self, user):
         self.myFrame = Tk()
         self.currUser = user
         self.myFrame.title("Add Recipe")
         self.myFrame.geometry("350x350")
-        #recipe title
+        #query to insert a recipe
+        #format coming in
+        #(food_type, cuisine_type, recipe_title, username)
+        rs = con.cursor()
+        recipeTest = ("pasta", "italian", "eu pasta", self.currUser)
+        insert = '''INSERT INTO Recipe (food_type, cuisine_type, recipe_title, username) 
+                    VALUES ("{}","{}","{}","{}")'''.format(recipeTest[0], recipeTest[1], recipeTest[2], recipeTest[3])
+        
+        rs.execute(insert)
+        con.commit()
+        print("after insert and commit")
+        ingredientList = [("butter", 1, "cup"), ("salt", 1, "tbsp"), ("cinnamon", 2, "tbsp")]
+        #query to insert a recipe
+        #get recipe id 
+        getRecipeId = '''SELECT recipe_id FROM Recipe WHERE recipe_title = "{}"'''.format(recipeTest[2])
+        rs.execute(getRecipeId)
+        recipeId = None
+        for result in rs:
+            print("get recipe id results",result)
+            recipeId = result
+    
+        print(recipeId)
+        for ingredient in ingredientList:
+            searchQuery = '''SELECT ingredient_id FROM Ingredient WHERE LOWER(ingredient_name) = LOWER("{}")'''.format(ingredient[0])
+            rs.execute(searchQuery)
+            print("past query")
+            row = rs.fetchone()
+            print(row)
+            if row is not None:
+                print("ingredient already exist")
+                self.ingredientIdList.append(row[0])
+                insertIngredientDetails = '''INSERT INTO IngredientOf (recipe_id, ingredient_id, amount, measurement_units) 
+                                                 VALUES ({}, {}, {}, "{}")'''.format(recipeId[0], row[0], ingredient[1], ingredient[2])
+                print(insertIngredientDetails)
+                rs.execute(insertIngredientDetails)
+                con.commit()
+            else:
+                print("in ingredient else")
+                #insert into ingredient 
+                insertIngredient = '''INSERT INTO Ingredient (ingredient_name) VALUES ("{}")'''.format(ingredient[0])
+                rs.execute(insertIngredient)
+                searchQuery = '''SELECT ingredient_id FROM Ingredient WHERE LOWER(ingredient_name) = LOWER("{}")'''.format(ingredient[0])
+                rs.execute(searchQuery)
+                row = rs.fetchone()
+                print("ingredient id", row[0])
+                #self.ingredientIdList.append(row[0])
+                print("past insert query")
+                #insert ingredient into recipe
+                insertIngredientDetails = '''INSERT INTO IngredientOf (recipe_id, ingredient_id, amount, measurement_units) 
+                                                 VALUES ({}, {}, {}, "{}")'''.format(recipeId[0], row[0], ingredient[1], ingredient[2])
+                print(insertIngredientDetails)
+                rs.execute(insertIngredientDetails)
+                con.commit()
+        print("after for ingredient loop")
+        #for ingredient_id in ingredientIdList:
+        #code to add instructions
+        
+            
+
+
+        #recipe 
 
 
 
