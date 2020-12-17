@@ -6,7 +6,7 @@ import config
 from tkinter import ttk
 import tkinter as tk
 import tkinter.font as tkFont
-
+from RecipePage import DisplayRecipe
 usr = config.mysql['user']
 pwd = config.mysql['password']
 hst = config.mysql['host']
@@ -32,6 +32,7 @@ class ProfilePage:
 class YourRecipes:
     myFrame = None
     currUser = None
+    recipeIdList = []
     def __init__(self, master, user):
         self.myFrame = master
         self.recipeLabel = ttk.Button(self.myFrame, text="Add Recipe", command=self.addRecipeFunction)
@@ -47,9 +48,16 @@ class YourRecipes:
         count = 0
         for title, id in rs:
             count+=1
+            self.recipeIdList.append(id)
             self.recipeList.insert(count, title)
 
         self.recipeList.grid(column = 1, row = 2)
+        self.recipeList.bind('<Double-1>', self.go)
+    
+    def go(self,event): 
+        print("in recipe selected")
+        id_index = self.recipeList.curselection()[0]
+        d = DisplayRecipe(self.recipeIdList[id_index])
 
     def addRecipeFunction(self):
         addRecipe = AddRecipe(self.currUser)
