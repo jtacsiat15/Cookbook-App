@@ -213,7 +213,7 @@ class DisplayMeal:
     def go(self, event):
         print("display recipe meals")
         id_index = self.recipeList.curselection()[0]
-        
+        print(id_index)
         d = DisplayRecipe(self.recipeIdList[id_index])
         # destroy everything in current frame so that recipe info can be built on top
         #for widget in self.myFrame.winfo_children():
