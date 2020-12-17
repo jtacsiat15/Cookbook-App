@@ -186,14 +186,14 @@ class AddRecipe:
         #format coming in
         #(food_type, cuisine_type, recipe_title, username)
         rs = con.cursor()
-        recipeInfo = ("pasta", "italian", "eu pasta", self.currUser)
+        #recipeInfo = ("pasta", "italian", "eu pasta", self.currUser)
         insert = '''INSERT INTO Recipe (food_type, cuisine_type, recipe_title, username)
                     VALUES ("{}","{}","{}","{}")'''.format(recipeInfo[0], recipeInfo[1], recipeInfo[2], recipeInfo[3])
 
         rs.execute(insert)
         con.commit()
         print("after insert and commit")
-        ingredientList = [("butter", 1, "cup"), ("salt", 1, "tbsp"), ("cinnamon", 2, "tbsp")]
+        #ingredientList = [("butter", 1, "cup"), ("salt", 1, "tbsp"), ("cinnamon", 2, "tbsp")]
         #query to insert a recipe
         #get recipe id
         getRecipeId = '''SELECT recipe_id FROM Recipe WHERE recipe_title = "{}"'''.format(recipeInfo[2])
@@ -239,12 +239,43 @@ class AddRecipe:
         #for ingredient_id in ingredientIdList:
         #code to add instructions
         #added instruction comments
-        recipeInstructionTest = [(1, "description"), (2, "extend"), (3, "extend")]
-        for instruction in recipeInstructionTest:
+        #instructions = [(1, "1i"),(2, "2i"),(3, "3i")]
+        for instruction in instructions:
             insertInstruction = '''INSERT INTO Instruction (recipe_id, step_number, description)
                                         VALUES ({}, {}, "{}")'''.format(recipeId[0], instruction[0], instruction[1])
             rs.execute(insertInstruction)
             con.commit()
+        
+        #add dietary restrictions
+        #restrictions.append("carnivore")
+        #restrictions.append("omnivore")
+        #restrictions =["r6", "r5", "vegan5"]
+        for restriction in restrictions:
+            searchQuery = '''SELECT restriction_id FROM DietaryRestriction WHERE LOWER(restriction_name) = LOWER("{}")'''.format(restrictions[0])
+            rs.execute(searchQuery)
+            row = rs.fetchone()
+            print(row)
+            if row is not None:
+                print("dietary restriction already exists")
+                '''insertRestrictionToRecipe = INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id) 
+                                                    VALUES ({}, {}).format(recipeId[0], row[0])
+                rs.execute(insertRestrictionToRecipe)
+                con.commit()'''
+            else:
+                insertRestrictionQuery = '''INSERT INTO DietaryRestriction (restriction_name)
+                                                VALUES ("{}")'''.format(restrictions[0])
+                rs.execute(insertRestrictionQuery)
+                con.commit()
+
+                searchQuery = '''SELECT restriction_id FROM DietaryRestriction WHERE LOWER(restriction_name) = LOWER("{}")'''.format(restrictions[0])
+                rs.execute(searchQuery)
+                restrictionId = rs.fetchone()
+
+                insertRestrictionToRecipe = '''INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id) 
+                                                    VALUES ({}, {})'''.format(recipeId[0], restrictionId[0])
+                rs.execute(insertRestrictionToRecipe)
+                con.commit()
+
 
 
 class Error:
