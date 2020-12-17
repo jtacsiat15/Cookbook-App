@@ -51,10 +51,8 @@ class RecipePage:
         searchButton = ttk.Button(self.myFrame, text="Search", command=self.search).grid(column=1, row=6, columnspan=2)
     def search(self):
         self.recipeList = Listbox(self.myFrame, width = 40)
-
-        query = '''SELECT r.title, r.id FROM
-                    (SELECT r1.recipe_title AS title, r1.recipe_id AS id
-                     FROM Recipe r1 '''
+        query = '''SELECT r1.recipe_title, r1.recipe_id
+                    FROM Recipe r1 '''
 
         usernames = self.usernameField.get()
         if(usernames != ""):
@@ -109,7 +107,6 @@ class RecipePage:
                     WHERE cuisine_type IN ({cuisines})'''.format(cuisines = input)
             query += (" INTERSECT " + q)
 
-        query += ")"
         rs = con.cursor()
         rs.execute(query)
 
@@ -142,6 +139,11 @@ class DisplayRecipe:
         #display ingredients
         rs = con.cursor()
 
+
+        #SELECT r.title, r.id FROM
+        #(SELECT r1.recipe_title AS title, r1.recipe_id AS id
+        #FROM Recipe r1 '''
+        
         query = '''SELECT recipe_title, cuisine_type, food_type
                     FROM Recipe
                     WHERE recipe_id = {}'''.format(recipe_id)
