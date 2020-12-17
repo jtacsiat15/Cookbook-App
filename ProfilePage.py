@@ -118,6 +118,7 @@ class AddRecipe:
         print("after for ingredient loop")
         #for ingredient_id in ingredientIdList:
         #code to add instructions
+        #added instruction comments
         recipeInstructionTest = [(1, "description"), (2, "extend"), (3, "extend")]
         for instruction in recipeInstructionTest:
             insertInstruction = '''INSERT INTO Instruction (recipe_id, step_number, description) 
