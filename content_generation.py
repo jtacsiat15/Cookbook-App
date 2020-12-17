@@ -92,6 +92,9 @@ def generateValues(fout):
     restrquery = "INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id)\n VALUES "
     reviewsquery = "INSERT INTO Rating (score, date_added, username, recipe_id)\n VALUES "
 
+    instructions = ["Preheat oven to 350 degrees", "In a large bowl, combine ingredients", "Let sit for 1 hour", "Add a pinch of salt", "Bring to a boil, and cook for 10-15 minutes", "Prepare ingredients", "Let cool", "Whisk together dry ingredients", "Marinate for 1 hour", "Place ingredients into blender and blend for 1-2 minutes", "Mix on high speed for 3-5 minutes", "Bake for 20-30 minutes", "rotating half-way through"]
+    instructionsquery = "INSERT INTO Instruction (recipe_id, step_number, description)\n VALUES "
+
     for j in japaneseFoods:
         for t in titles:
             query+= "(\"" + j + "\", \"Japanese\", \"" + t + j + "\", \"" + usernames[random.randint(0, len(usernames)-1)]+"\"),\n"
@@ -114,6 +117,9 @@ def generateValues(fout):
             day = [random.randint(1, 28) for i in range(30)]
             for i in range(30):
                 reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
+            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
+            for i in range(len(cnt_steps)):
+                instructionsquery += "("+ str(count) + ", " + str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
             count += 1
     for j in chineseFoods:
         for t in titles:
@@ -137,6 +143,9 @@ def generateValues(fout):
             day = [random.randint(1, 28) for i in range(30)]
             for i in range(30):
                 reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
+            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
+            for i in range(len(cnt_steps)):
+                instructionsquery += "("+ str(count) + ", " + str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
             count += 1
     for j in italianFoods:
         for t in titles:
@@ -160,6 +169,9 @@ def generateValues(fout):
             day = [random.randint(1, 28) for i in range(30)]
             for i in range(30):
                 reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
+            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
+            for i in range(len(cnt_steps)):
+                instructionsquery += "("+ str(count) + ", " + str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
             count += 1
     for j in americanFoods:
         for t in titles:
@@ -183,6 +195,9 @@ def generateValues(fout):
             day = [random.randint(1, 28) for i in range(30)]
             for i in range(30):
                 reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
+            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
+            for i in range(len(cnt_steps)):
+                instructionsquery += "("+ str(count) + ", " + str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
             count += 1
     for j in indianFoods:
         for t in titles:
@@ -206,6 +221,9 @@ def generateValues(fout):
             day = [random.randint(1, 28) for i in range(30)]
             for i in range(30):
                 reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
+            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
+            for i in range(len(cnt_steps)):
+                instructionsquery += "("+ str(count) + ", " + str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
             count += 1
     for j in vietnameseFoods:
         for t in titles:
@@ -229,6 +247,9 @@ def generateValues(fout):
             day = [random.randint(1, 28) for i in range(30)]
             for i in range(30):
                 reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
+            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
+            for i in range(len(cnt_steps)):
+                instructionsquery += "("+ str(count) + ", " +str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
             count += 1
     for j in mexicanFoods:
         for t in titles:
@@ -252,6 +273,9 @@ def generateValues(fout):
             day = [random.randint(1, 28) for i in range(30)]
             for i in range(30):
                 reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
+            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
+            for i in range(len(cnt_steps)):
+                instructionsquery += "("+ str(count) + ", " + str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
             count += 1
 
     query = query[:-2] + ";\n\n"
@@ -269,6 +293,8 @@ def generateValues(fout):
     reviewsquery = reviewsquery[:-2] + ";\n\n"
     fout.write(reviewsquery)
 
+    instructionsquery = instructionsquery[:-2] + ";\n\n"
+    fout.write(instructionsquery)
     count = count -1
 
     mealquery = "INSERT INTO Meal(meal_name, description, username) \nValues"
