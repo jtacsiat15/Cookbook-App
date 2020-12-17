@@ -154,7 +154,7 @@ INSERT INTO Recipe (food_type, cuisine_type, recipe_title, username)
   VALUES ("pizza", "italian", "pizza margherita on focaccia", "gordonramsay123"),
           ("bread", "italian", "focaccia bread", "gordonramsay123"),
           ("pizza", "italian", "pepperoni pizza", "guyfieri420"),
-          ("burger", "america", "cheeseburger", "spongebob2"),
+          ("burger", "american", "cheeseburger", "spongebob2"),
           ("soup", "japanese", "miso soup", "altonbrown_1"),
           ("sauce", "japanese", "teriyaki sauce", "spongebob2"),
           ("ratatouille", "french", "ratatouille", "rat_atouille"),

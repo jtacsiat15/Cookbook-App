@@ -7,6 +7,7 @@ from tkinter import ttk
 import tkinter as tk
 from RecipePage import RecipePage
 from MealPage import MealPage
+from ProfilePage import ProfilePage
 
 usr = config.mysql['user']
 pwd = config.mysql['password']
@@ -237,12 +238,6 @@ class MainProgram:
         r = RecipePage(recipeFrame, user)
         m = MealPage(mealSearchFrame, user)
         p = ProfilePage(profileFrame, user)
-
-class ProfilePage:
-    myFrame = None
-
-    def __init__(self, master, user):
-        self.myFrame = master
 
 
 l = LoginOrSignUp(root)
