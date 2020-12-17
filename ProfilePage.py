@@ -157,10 +157,6 @@ class AddRecipe:
         if(len(ingredientList) == 0):
             e = Error("Must provide at least one ingredient")
 
-        cuisineType = self.cuisineEntry.get()
-        foodType = self.foodEntry.get()
-
-
         instructions = []
         for i in range(10):
             step = self.instructionEntries[i].get()
@@ -186,7 +182,7 @@ class AddRecipe:
         #format coming in
         #(food_type, cuisine_type, recipe_title, username)
         rs = con.cursor()
-        recipeInfo = ("pasta", "italian", "eu pasta", self.currUser)
+        recipeInfo = ("pasta", "italian", "lasagna", self.currUser)
         insert = '''INSERT INTO Recipe (food_type, cuisine_type, recipe_title, username)
                     VALUES ("{}","{}","{}","{}")'''.format(recipeInfo[0], recipeInfo[1], recipeInfo[2], recipeInfo[3])
 
@@ -204,6 +200,7 @@ class AddRecipe:
             recipeId = result
 
         print(recipeId)
+        ingredientList = [("parmesean", .5, "cups"), ("pasta", 1, "box"), ("marinara", 4, "cups"), ("salt", 2, "tsp")]
         for ingredient in ingredientList:
             searchQuery = '''SELECT ingredient_id FROM Ingredient WHERE LOWER(ingredient_name) = LOWER("{}")'''.format(ingredient[0])
             rs.execute(searchQuery)
@@ -239,13 +236,62 @@ class AddRecipe:
         #for ingredient_id in ingredientIdList:
         #code to add instructions
         #added instruction comments
-        recipeInstructionTest = [(1, "description"), (2, "extend"), (3, "extend")]
-        for instruction in recipeInstructionTest:
+        instructions = [(1, "description"), (2, "extend"), (3, "extend")]
+        for instruction in instructions:
             insertInstruction = '''INSERT INTO Instruction (recipe_id, step_number, description)
                                         VALUES ({}, {}, "{}")'''.format(recipeId[0], instruction[0], instruction[1])
             rs.execute(insertInstruction)
             con.commit()
 
+        tools = ["pot", "toaster", "knife"]
+        for tool in tools:
+            query = ''' SELECT tool_id
+                        FROM CookingTool
+                        WHERE LOWER(tool_name) = LOWER("{input}")'''.format(input = tool)
+            rs.execute(query)
+            index = rs.fetchone()
+            if index is not None:
+                index = index[0]
+            else:
+                query = '''INSERT INTO CookingTool (tool_name)
+                           VALUES ("{input}")'''.format(input = tool)
+                rs.execute(query)
+                con.commit()
+                query = ''' SELECT tool_id
+                            FROM CookingTool
+                            WHERE LOWER(tool_name) = LOWER("{input}")'''.format(input = tool)
+                rs.execute(query)
+                index = rs.fetchone()[0]
+            query = ''' INSERT INTO CookingToolsRequired (tool_id,recipe_id)
+                        VALUES ({input1}, {input2})'''.format(input1 = index, input2 = recipeId[0])
+            rs.execute(query)
+            con.commit()
+
+
+            restrictions = ["vegan", "keto"]
+            for restriction in restrictions:
+                query = ''' SELECT restriction_id
+                            FROM DietaryRestriction
+                            WHERE LOWER(restriction_name) = LOWER("{input}")'''.format(input = restriction)
+                rs.execute(query)
+                index = rs.fetchone()
+                if index is not None:
+                    index = index[0]
+                else:
+                    query = '''INSERT INTO DietaryRestriction (restriction_name)
+                               VALUES ("{input}")'''.format(input = restriction)
+                    rs.execute(query)
+                    con.commit()
+                    query = ''' SELECT restriction_id
+                                FROM DietaryRestriction
+                                WHERE LOWER(restriction_name) = LOWER("{input}")'''.format(input = tool)
+                    rs.execute(query)
+                    index = rs.fetchone()
+                    print(index)
+                query = ''' INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id)
+                            VALUES ({input1}, {input2})'''.format(input1 = recipeId[0], input2 = index)
+                #rs.execute(query)
+                con.commit()
 
 class Error:
 
@@ -263,11 +309,13 @@ class Error:
 
 class YourMeals:
     myFrame = None
+    currUser = None
 
     def __init__(self, master, user):
         self.myFrame = master
-        self.mealButton = ttk.Button(self.myFrame, text="Add Meal")
+        self.mealButton = ttk.Button(self.myFrame, text="Add Meal", command = self.addMeal)
         self.mealButton.grid(column = 1, row = 1)
+        self.currUser = user
 
         # query
         query = '''SELECT meal_name, meal_id
@@ -282,3 +330,6 @@ class YourMeals:
             count+=1
             self.mealList.insert(count, title)
         self.mealList.grid(column = 1, row = 2)
+
+    def addMeal(self):
+        """ TODO """
