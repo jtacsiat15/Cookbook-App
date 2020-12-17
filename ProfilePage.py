@@ -66,13 +66,16 @@ class AddRecipe:
     instructionEntries = None
     restrictionEntries = None
     toolEntries = None
+    ingredientIdList = []
 
     def __init__(self, user):
         self.myFrame = Tk()
         self.currUser = user
         self.myFrame.title("Add Recipe")
         self.myFrame.geometry("1000x600")
-        #recipe title
+        #query to insert a recipe
+
+        #recipe
 
         recipeFrame = Frame(self.myFrame)
         recipeFrame.grid(row=1, column=1, columnspan = 3)
@@ -100,27 +103,33 @@ class AddRecipe:
         for i in range(15): self.ingredientEntries[i].grid(row=i+1, column = 2)
 
         amountLabels = [Label(ingredientFrame, text="Amount:").grid(row=i+1, column = 3) for i in range(15)]
-        self.amountEntries = [Entry(ingredientFrame, width = 2).grid(row=i+1, column = 4) for i in range(15)]
+        self.amountEntries = [Entry(ingredientFrame, width = 2) for i in range(15)]
+        for i in range(15): self.amountEntries[i].grid(row=i+1, column = 4)
+
         unitLabels = [Label(ingredientFrame, text="Units:").grid(row=i+1, column = 5) for i in range(15)]
-        self.unitEntries = [Entry(ingredientFrame, width = 4).grid(row=i+1, column = 6) for i in range(15)]
+        self.unitEntries = [Entry(ingredientFrame, width = 4) for i in range(15)]
+        for i in range(15): self.unitEntries[i].grid(row=i+1, column = 6)
 
         instructionFrame = LabelFrame(self.myFrame, text = "Instructions")
         instructionFrame.grid(row=2, column=2, rowspan = 2)
 
         instructionLabel = [Label(instructionFrame, text="Step " + str(i+1)+ ":").grid(row=i+1, column = 1) for i in range(10)]
-        self.instructionEntries = [Entry(instructionFrame, width = 20).grid(row=i+1, column = 2, ipady=7) for i in range(10)]
+        self.instructionEntries = [Entry(instructionFrame, width = 20) for i in range(10)]
+        for i in range(10): self.instructionEntries[i].grid(row=i+1, column = 2, ipady=7)
 
         cookingToolFrame = LabelFrame(self.myFrame, text="Cooking Tools")
         cookingToolFrame.grid(row=2, column = 3)
 
-        toolLabel = [Label(cookingToolFrame, text="Tool: " + str(i+1)+ ":", pady = 5).grid(row=i+1, column = 1) for i in range(5)]
-        self.toolEntries = [Entry(cookingToolFrame, width = 25).grid(row=i+1, column = 2) for i in range(5)]
+        toolLabel = [Label(cookingToolFrame, text="Tool: " + str(i+1)+ ":", pady = 6).grid(row=i+1, column = 1) for i in range(6)]
+        self.toolEntries = [Entry(cookingToolFrame, width = 25) for i in range(6)]
+        for i in range(6): self.toolEntries[i].grid(row=i+1, column = 2)
 
         dietaryRestrictionFrame = LabelFrame(self.myFrame, text = "Dietary Restrictions")
         dietaryRestrictionFrame.grid(row=3, column = 3)
 
-        restrictionLabel = [Label(dietaryRestrictionFrame, text="Restriction: " + str(i+1)+ ":", pady = 5).grid(row=i+1, column = 1) for i in range(8)]
-        self.restrictionEntries = [Entry(dietaryRestrictionFrame, width = 20).grid(row=i+1, column = 2) for i in range(8)]
+        restrictionLabel = [Label(dietaryRestrictionFrame, text="Restriction: " + str(i+1)+ ":", pady = 6).grid(row=i+1, column = 1) for i in range(6)]
+        self.restrictionEntries = [Entry(dietaryRestrictionFrame, width = 20)for i in range(6)]
+        for i in range(6): self.restrictionEntries[i].grid(row=i+1, column = 2)
 
         saveButton = Button(self.myFrame, text = "Save Recipe", command = self.save)
         saveButton.grid(row=4, column=1, columnspan = 3)
@@ -129,23 +138,124 @@ class AddRecipe:
         """ saves info """
         #currUser = None
         recipeTitle = self.recipeEntry.get()
+
+        if(recipeTitle == ""):
+            e = Error("Must provide a recipe name")
         cuisineType = self.cuisineEntry.get()
         foodType = self.foodEntry.get()
 
-        ingredient = []
+        recipeInfo = (foodType, cuisineType, recipeTitle, self.currUser)
+
+        ingredientList = []
         for i in range(15):
             name = self.ingredientEntries[i].get()
             amount = self.amountEntries[i].get()
             unit = self.unitEntries[i].get()
             if(name != "" and amount != "" and unit != ""):
-                ingredients.append((name, amount, unit))
+                ingredientList.append((name, amount, unit))
+
+        if(len(ingredientList) == 0):
+            e = Error("Must provide at least one ingredient")
+
+        cuisineType = self.cuisineEntry.get()
+        foodType = self.foodEntry.get()
+
 
         instructions = []
+        for i in range(10):
+            step = self.instructionEntries[i].get()
+            if(step != ""):
+                instructions.append((i+1, step))
 
-        instructionEntries = None
-        restrictionEntries = None
-        toolEntries = None
-        """
+        if(len(ingredientList) == 0):
+            e = Error("Must provide at least one instruction")
+
+        restrictions = []
+        for i in range(6):
+            restriction = self.restrictionEntries[i].get()
+            if(restriction != ""):
+                instructions.append(restriction)
+
+        tools = []
+        for i in range(6):
+            tool = self.toolEntries[i].get()
+            if(tool != ""):
+                tools.append(tool)
+
+
+        #format coming in
+        #(food_type, cuisine_type, recipe_title, username)
+        rs = con.cursor()
+        recipeInfo = ("pasta", "italian", "eu pasta", self.currUser)
+        insert = '''INSERT INTO Recipe (food_type, cuisine_type, recipe_title, username)
+                    VALUES ("{}","{}","{}","{}")'''.format(recipeInfo[0], recipeInfo[1], recipeInfo[2], recipeInfo[3])
+
+        rs.execute(insert)
+        con.commit()
+        print("after insert and commit")
+        ingredientList = [("butter", 1, "cup"), ("salt", 1, "tbsp"), ("cinnamon", 2, "tbsp")]
+        #query to insert a recipe
+        #get recipe id
+        getRecipeId = '''SELECT recipe_id FROM Recipe WHERE recipe_title = "{}"'''.format(recipeInfo[2])
+        rs.execute(getRecipeId)
+        recipeId = None
+        for result in rs:
+            print("get recipe id results",result)
+            recipeId = result
+
+        print(recipeId)
+        for ingredient in ingredientList:
+            searchQuery = '''SELECT ingredient_id FROM Ingredient WHERE LOWER(ingredient_name) = LOWER("{}")'''.format(ingredient[0])
+            rs.execute(searchQuery)
+            print("past query")
+            row = rs.fetchone()
+            print(row)
+            if row is not None:
+                print("ingredient already exist")
+                self.ingredientIdList.append(row[0])
+                insertIngredientDetails = '''INSERT INTO IngredientOf (recipe_id, ingredient_id, amount, measurement_units)
+                                                 VALUES ({}, {}, {}, "{}")'''.format(recipeId[0], row[0], ingredient[1], ingredient[2])
+                print(insertIngredientDetails)
+                rs.execute(insertIngredientDetails)
+                con.commit()
+            else:
+                print("in ingredient else")
+                #insert into ingredient
+                insertIngredient = '''INSERT INTO Ingredient (ingredient_name) VALUES ("{}")'''.format(ingredient[0])
+                rs.execute(insertIngredient)
+                searchQuery = '''SELECT ingredient_id FROM Ingredient WHERE LOWER(ingredient_name) = LOWER("{}")'''.format(ingredient[0])
+                rs.execute(searchQuery)
+                row = rs.fetchone()
+                print("ingredient id", row[0])
+                #self.ingredientIdList.append(row[0])
+                print("past insert query")
+                #insert ingredient into recipe
+                insertIngredientDetails = '''INSERT INTO IngredientOf (recipe_id, ingredient_id, amount, measurement_units)
+                                                 VALUES ({}, {}, {}, "{}")'''.format(recipeId[0], row[0], ingredient[1], ingredient[2])
+                print(insertIngredientDetails)
+                rs.execute(insertIngredientDetails)
+                con.commit()
+        print("after for ingredient loop")
+        #for ingredient_id in ingredientIdList:
+        #code to add instructions
+
+
+
+
+
+class Error:
+
+    def __init__(self, errorMessage):
+        self.myFrame = Tk()
+        self.myFrame.title("Error")
+        self.myFrame.geometry("300x100")
+
+        errorLabel = Label(self.myFrame, text = errorMessage)
+        errorLabel.grid(row=1, column=1, columnspan=3)
+
+        okButton = Button(self.myFrame, text = "Ok", command = self.myFrame.destroy)
+        okButton.grid(row=2, column=3)
+
 
 class YourMeals:
     myFrame = None
