@@ -15,12 +15,6 @@ con = mysql.connector.connect(user=usr,password=pwd, host=hst, database=dab)
 
 
 class RecipePage:
-    myFrame = None
-    usernameField = None
-    IngredientField = None
-    toolField = None
-    dietField = None
-    cuisineField = None
 
     def __init__(self, master, user):
         self.myFrame = master
