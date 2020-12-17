@@ -47,7 +47,7 @@ class LoginOrSignUp:
 
     def skip(self):
         self.myFrame.destroy()
-        m = MainProgram(root, "gordonramsay123")
+        m = MainProgram(root, "chef_anna0")
 
 
 class Login:

@@ -113,8 +113,8 @@ CREATE TABLE RecipeHasDietaryRestrictions(
   recipe_id INT UNSIGNED,
   restriction_id INT UNSIGNED,
   PRIMARY KEY (recipe_id, restriction_id),
-  FOREIGN KEY (restriction_id) REFERENCES DietaryRestriction(restriction_id) ON DELETE CASCADE,
-  FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id) ON DELETE CASCADE
+  FOREIGN KEY (restriction_id) REFERENCES DietaryRestriction(restriction_id),
+  FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id)
 );
 
 CREATE TABLE RecipesInMeals(
@@ -133,7 +133,7 @@ INSERT INTO DietaryRestriction (restriction_name)
   VALUES ("Vegan"),
           ("Vegetarian"),
           ("Lactose Intolerant"),
-          ("GSluten Free");
+          ("Gluten Free");
 
 INSERT INTO CookingTool (tool_name)
   VALUES ("Pot"),
