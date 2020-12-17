@@ -5,7 +5,7 @@ import sys
 import config
 from tkinter import ttk
 import tkinter as tk
-
+from RecipePage import DisplayRecipe
 usr = config.mysql['user']
 pwd = config.mysql['password']
 hst = config.mysql['host']
@@ -161,7 +161,8 @@ class DisplayMeal:
     # meal info to be displayed
     recipeList = None
     idListArray = []
-
+    recipeIdList = []
+    recipe_id = None
 
     def __init__(self, meal_id):
         self.myFrame = Tk()
@@ -183,6 +184,7 @@ class DisplayMeal:
             #self.recipeList.insert(count, str(recipe_id[0]))
 
         self.recipeList.delete(0, self.recipeList.size())
+        self.recipeIdList.clear()
         print("past clear list")
         print(self.recipeList.size())
         for recipe_id in self.idListArray:
@@ -193,19 +195,28 @@ class DisplayMeal:
             rs.execute(getRecipe)
             for recipe in rs:
                 count +=1
+                self.recipeIdList.append(recipe[1])
                 self.recipeList.insert(count, str(recipe[0]))
         #do query to get the
         '''for recipe_id in idList:
             #get recipes information
             getRecipe = '''
-        print(self.recipeList.size)
+        print(self.recipeList.size())
+        #id_index = self.mealList.curselection()[0]
+        #id_index = self.recipeList.curselection()[0]
+        #print("id index", id_index)
+        #self.recipe_id = self.idList[id_index]
+        self.recipeList.bind('<Double-1>', self.go)
         self.recipeList.pack()
 
 
     def go(self, event):
-
+        print("display recipe meals")
+        id_index = self.recipeList.curselection()[0]
+        
+        d = DisplayRecipe(self.recipeIdList[id_index])
         # destroy everything in current frame so that recipe info can be built on top
-        for widget in self.myFrame.winfo_children():
-            widget.destroy()
+        #for widget in self.myFrame.winfo_children():
+        #    widget.destroy()
 
         #r = DisplayMeal(myFrame, recipe_id)
