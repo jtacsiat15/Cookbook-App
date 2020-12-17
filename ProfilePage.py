@@ -58,6 +58,7 @@ class YourMeals:
         self.mealButton = ttk.Button(self.myFrame, text="Add Meal")
         self.mealButton.grid(column = 1, row = 1)
 
+        # query
         query = '''SELECT meal_name, meal_id
                     FROM Meal
                     WHERE username = "{input}"'''.format(input = user)
