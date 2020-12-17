@@ -61,6 +61,8 @@ class AddRecipe:
         self.currUser = user
         self.myFrame.title("Add Recipe")
         self.myFrame.geometry("350x350")
+        #recipe title
+
 
 
 class YourMeals:
