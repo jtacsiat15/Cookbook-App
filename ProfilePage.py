@@ -30,12 +30,12 @@ class ProfilePage:
 
 class YourRecipes:
     myFrame = None
-
+    currUser = None
     def __init__(self, master, user):
         self.myFrame = master
-        self.recipeLabel = ttk.Button(self.myFrame, text="Add Recipe")
+        self.recipeLabel = ttk.Button(self.myFrame, text="Add Recipe", command=self.addRecipeFunction)
         self.recipeLabel.grid(column = 1, row = 1)
-
+        self.currUser = user
         query = '''SELECT recipe_title, recipe_id
                     FROM Recipe
                     WHERE username = "{input}"'''.format(input = user)
@@ -50,6 +50,17 @@ class YourRecipes:
 
         self.recipeList.grid(column = 1, row = 2)
 
+    def addRecipeFunction(self):
+        addRecipe = AddRecipe(self.currUser)
+
+class AddRecipe:
+    myFrame = None
+    currUser = None
+    def __init__(self, user):
+        self.myFrame = Tk()
+        self.currUser = user
+        self.myFrame.title("Add Recipe")
+        self.myFrame.geometry("350x350")
 
 
 class YourMeals:
@@ -59,3 +70,4 @@ class YourMeals:
         self.myFrame = master
         self.mealLabel = ttk.Button(self.myFrame, text="Add Meal")
         self.mealLabel.pack()
+
