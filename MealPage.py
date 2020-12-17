@@ -166,22 +166,22 @@ class DisplayMeal:
 
     def __init__(self, meal_id):
         rs = con.cursor()
-        
+
         self.myFrame = Tk()
         self.myFrame.title("Meal")
         self.myFrame.geometry("350x350")
         print(meal_id)
         self.recipeList = Listbox(self.myFrame, width = 40)
-        getMealInfo = "SELECT meal_name, description WHERE meal_id = {}".format(meal_id)
+        getMealInfo = "SELECT meal_name, description FROM Meal WHERE meal_id = {}".format(meal_id)
         rs.execute(getMealInfo)
         for mealInfo in rs:
             mealName =  Label(self.myFrame, text = mealInfo[0])
-            mealName.pack
+            mealName.pack()
             mealDescription = Label(self.myFrame, text = mealInfo[1])
             mealDescription.pack()
 
 
-        
+
         # execute query to get meal info
         getRecipeIds = "SELECT recipe_id FROM RecipesInMeals WHERE meal_id = {}".format(meal_id)
         rs.execute(getRecipeIds, (meal_id))
