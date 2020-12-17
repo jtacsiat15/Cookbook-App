@@ -21,6 +21,8 @@ class RecipePage:
     toolField = None
     dietField = None
     cuisineField = None
+    recipeIDList = []
+    recipeList = None
 
     def __init__(self, master, user):
         self.myFrame = master
@@ -46,8 +48,8 @@ class RecipePage:
         self.cuisineField.grid(column=2, row = 5)
 
         searchButton = ttk.Button(self.myFrame, text="Search", command=self.search).grid(column=1, row=6, columnspan=2)
-
     def search(self):
+        self.recipeList = Listbox(self.myFrame, width = 40)
         query = ""
 
         usernames = self.usernameField.get()
@@ -120,12 +122,57 @@ class RecipePage:
         #result_window = tk.TopLevel(root)
         #result_window.title("Results")
 
-        recipeList = Listbox(self.myFrame, width = 40)
-
+        
+        self.recipeList.bind('<Double-1>', self.go)
         count = 0
 
         for (title, id) in rs:
             count += 1
-            recipeList.insert(count, str(title))
+            self.recipeIDList.append(id)
+            self.recipeList.insert(count, str(title))
 
-        recipeList.grid(column = 1, row = 8, columnspan = 2)
+        self.recipeList.grid(column = 1, row = 8, columnspan = 2)
+
+    def go(self, event):
+        recipe_id = self.recipeList.curselection()[0] 
+        recipe_id += 1
+        print("in recipe selection")
+        displayRecipe = DisplayRecipe(recipe_id)
+
+class DisplayRecipe:
+    def __init__(self, recipe_id):
+        print(recipe_id)
+        self.myFrame = Tk()
+        self.myFrame.title("Recipe")
+        self.myFrame.geometry("700x700")
+        print(recipe_id)
+        ingredientList = Listbox(self.myFrame, width = 100)
+        instructionsList = Listbox(self.myFrame, width = 100)
+        #display ingredients
+        rs = con.cursor()
+        getRecipeIngredients = '''SELECT i.ingredient_name, io.amount, io.measurement_units
+                                    FROM IngredientOf io JOIN Ingredient i USING (ingredient_id)
+                                    WHERE io.recipe_id = {}'''.format(recipe_id)
+        rs.execute(getRecipeIngredients)
+        count = 0
+        for ingredients in rs:
+            count += 1
+            ingredientList.insert(count, ingredients)
+        ingredientList.pack()
+
+        getInstructions = '''SELECT step_number, description
+                                FROM Instruction
+                                WHERE recipe_id = {}'''.format(recipe_id)
+        rs.execute(getInstructions)
+
+        instructionCount = 0
+        for instruction in rs:
+            instructionCount += 1
+            instructionsList.insert(instructionCount, instruction)
+        instructionsList.pack()
+        
+        
+        
+        #display instructions
+        
+
