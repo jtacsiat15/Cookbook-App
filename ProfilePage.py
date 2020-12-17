@@ -165,7 +165,7 @@ class AddRecipe:
             if(step != ""):
                 instructions.append((i+1, step))
 
-        if(len(ingredientList) == 0):
+        if(len(instructions) == 0):
             e = Error("Must provide at least one instruction")
             return 0
 
@@ -241,7 +241,7 @@ class AddRecipe:
                                         VALUES ({}, {}, "{}")'''.format(recipeId[0], instruction[0], instruction[1])
             rs.execute(insertInstruction)
             con.commit()
-
+        """
         #add dietary restrictions
         #restrictions.append("carnivore")
         #restrictions.append("omnivore")
@@ -271,7 +271,7 @@ class AddRecipe:
                                                     VALUES ({}, {})'''.format(recipeId[0], restrictionId[0])
                 rs.execute(insertRestrictionToRecipe)
                 con.commit()
-
+        """
 
         for tool in tools:
             query = ''' SELECT tool_id

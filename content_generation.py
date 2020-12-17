@@ -181,7 +181,7 @@ def generateValues(fout):
             for c in cnt_common:
                 ingredientOfquery += ("("+ str(count) + ", " + str(71 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
             for c in cnt_s:
-                ingredientOfquery += ("(" + str(count) + ", " + str(31 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
+                ingredientOfquery += ("(" + str(count) + ", " + str(61 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
             cnt_tools = random.sample(range(1,15), random.randint(1,14))
             for c in cnt_tools:
                 toolsquery += ("(" + str(c) + ", " + str(count) + "),\n")
@@ -207,7 +207,7 @@ def generateValues(fout):
             for c in cnt_common:
                 ingredientOfquery += ("("+ str(count) + ", " + str(71 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
             for c in cnt_s:
-                ingredientOfquery += ("(" + str(count) + ", " + str(41 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
+                ingredientOfquery += ("(" + str(count) + ", " + str(31 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
             cnt_tools = random.sample(range(1,15), random.randint(1,14))
             for c in cnt_tools:
                 toolsquery += ("(" + str(c) + ", " + str(count) + "),\n")
@@ -233,7 +233,7 @@ def generateValues(fout):
             for c in cnt_common:
                 ingredientOfquery += ("("+ str(count) + ", " + str(71 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
             for c in cnt_s:
-                ingredientOfquery += ("(" + str(count) + ", " + str(51 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
+                ingredientOfquery += ("(" + str(count) + ", " + str(41 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
             cnt_tools = random.sample(range(1,15), random.randint(1,14))
             for c in cnt_tools:
                 toolsquery += ("(" + str(c) + ", " + str(count) + "),\n")
@@ -259,7 +259,7 @@ def generateValues(fout):
             for c in cnt_common:
                 ingredientOfquery += ("("+ str(count) + ", " + str(71 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
             for c in cnt_s:
-                ingredientOfquery += ("(" + str(count) + ", " + str(61 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
+                ingredientOfquery += ("(" + str(count) + ", " + str(51 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
             cnt_tools = random.sample(range(1,15), random.randint(1,14))
             for c in cnt_tools:
                 toolsquery += ("(" + str(c) + ", " + str(count) + "),\n")
@@ -297,31 +297,24 @@ def generateValues(fout):
     fout.write(instructionsquery)
     count = count -1
 
-    mealquery = "INSERT INTO Meal(meal_name, description, username) \nValues"
-    for i 
+    mealquery = "INSERT INTO Meal(meal_name, description, username) \nVALUES "
+    mrquery = "INSERT INTO RecipesInMeals (recipe_id, meal_id) \n VALUES "
 
-    #for i in range(1,500):
+    descritions = ["A delicious meal", "Very simple weeknight meal", "A meal to impress guests", "A healthy dinner", "The best thanksgivin meals", "My favorite recipes of all time"]
 
+    meal_count = 1
+    for u in usernames:
+        for i in range(random.randint(2, 20)):
+            mealquery += "(\"My Meal " + str(i+1) + "\", \"" + descritions[random.randint(0, 5)] + "\", \"" + u + "\"),\n"
+            cnt_recipes = random.sample(range(1, count), random.randint(1,20))
+            for c in cnt_recipes:
+                mrquery += "(" + str(c)+","+str(meal_count) + "),\n"
+            meal_count += 1
 
-    '''
-    for i in range(amount):
-        query += "\t("
-
-        # employee ID
-        query += str(i+1) + ", "
-
-        # salary
-        query += str(random.randint(12000, 150000)) + ", "
-
-        # title
-        possibleTitles = ["administrator", "engineer", "manager", "salesperson"]
-        query += '"' + possibleTitles[random.randint(0,3)] + '"'
-
-        if(i != amount-1):
-            query += "),\n"
-        else:
-            query += ");"
-    '''
+    mealquery = mealquery[:-2] + ";\n\n"
+    fout.write(mealquery)
+    mrquery = mrquery[:-2] + ";\n\n"
+    fout.write(mrquery)
 
 
 

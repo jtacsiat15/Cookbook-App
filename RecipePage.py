@@ -51,8 +51,10 @@ class RecipePage:
         searchButton = ttk.Button(self.myFrame, text="Search", command=self.search).grid(column=1, row=6, columnspan=2)
     def search(self):
         self.recipeList = Listbox(self.myFrame, width = 40)
-        query = '''SELECT r1.recipe_title, r1.recipe_id
-                    FROM Recipe r1 '''
+
+        query = '''SELECT r.title, r.id FROM
+                    (SELECT r1.recipe_title AS title, r1.recipe_id AS id
+                     FROM Recipe r1 '''
 
         usernames = self.usernameField.get()
         if(usernames != ""):
@@ -107,6 +109,7 @@ class RecipePage:
                     WHERE cuisine_type IN ({cuisines})'''.format(cuisines = input)
             query += (" INTERSECT " + q)
 
+        query += ")"
         rs = con.cursor()
         rs.execute(query)
 
@@ -138,6 +141,30 @@ class DisplayRecipe:
         instructionsList = Listbox(self.myFrame, width = 100)
         #display ingredients
         rs = con.cursor()
+
+        query = '''SELECT recipe_title, cuisine_type, food_type
+                    FROM Recipe
+                    WHERE recipe_id = {}'''.format(recipe_id)
+
+        rs.execute(query)
+        for info in rs:
+            title = Label(self.myFrame, text = info[0])
+            title.pack()
+            description = Label(self.myFrame, text = "Cuisine: " + str(info[1]))
+            description.pack()
+            desc2 = Label(self.myFrame, text = "Food: " + str(info[2]))
+            desc2.pack()
+
+        query = ''' SELECT AVG(ra.score)
+            FROM Recipe r JOIN Rating ra ON (r.recipe_id = ra.recipe_id)
+            WHERE r.recipe_id = {}
+            GROUP BY r.recipe_id'''.format(recipe_id)
+
+        rs.execute(query)
+        for info in rs:
+            rating = Label(self.myFrame, text = "Average Rating: " + str(info[0])[:-3])
+            rating.pack()
+
         getRecipeIngredients = '''SELECT i.ingredient_name, io.amount, io.measurement_units
                                     FROM IngredientOf io JOIN Ingredient i USING (ingredient_id)
                                     WHERE io.recipe_id = {}'''.format(recipe_id)
