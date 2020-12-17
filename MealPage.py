@@ -170,7 +170,8 @@ class DisplayMeal:
         print(meal_id)
         self.recipeList = Listbox(self.myFrame, width = 40)
 
-        rs = con.cursor()
+
+        rs.execute(getRecipeIds, (meal_id))
         # execute query to get meal info
         getRecipeIds = "SELECT recipe_id FROM RecipesInMeals WHERE meal_id = {}".format(meal_id)
         rs.execute(getRecipeIds, (meal_id))
