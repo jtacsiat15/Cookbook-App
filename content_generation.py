@@ -267,7 +267,7 @@ def generateValues(fout):
             for c in cnt_restr:
                 if c < 6:
                     restrquery += ("(" + str(count) + ", " + str(c) + "),\n")
-            scores = [random.randint(1,5) for i in range (30)]
+            scores = [random.randint(2,5) for i in range (30)]
             year = [random.randint(2005, 2020) for i in range(30)]
             month = [random.randint(1, 12) for i in range(30)]
             day = [random.randint(1, 28) for i in range(30)]
@@ -304,9 +304,9 @@ def generateValues(fout):
 
     meal_count = 1
     for u in usernames:
-        for i in range(random.randint(2, 20)):
+        for i in range(random.randint(2, 15)):
             mealquery += "(\"My Meal " + str(i+1) + "\", \"" + descritions[random.randint(0, 5)] + "\", \"" + u + "\"),\n"
-            cnt_recipes = random.sample(range(1, count), random.randint(1,20))
+            cnt_recipes = random.sample(range(1, count), random.randint(1,8))
             for c in cnt_recipes:
                 mrquery += "(" + str(c)+","+str(meal_count) + "),\n"
             meal_count += 1

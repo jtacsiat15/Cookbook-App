@@ -53,9 +53,8 @@ class YourRecipes:
 
         self.recipeList.grid(column = 1, row = 2)
         self.recipeList.bind('<Double-1>', self.go)
-    
-    def go(self,event): 
-        print("in recipe selected")
+
+    def go(self,event):
         id_index = self.recipeList.curselection()[0]
         d = DisplayRecipe(self.recipeIdList[id_index])
 
@@ -198,62 +197,46 @@ class AddRecipe:
 
         rs.execute(insert)
         con.commit()
-        print("after insert and commit")
         #query to insert a recipe
         #get recipe id
         getRecipeId = '''SELECT recipe_id FROM Recipe WHERE recipe_title = "{}"'''.format(recipeInfo[2])
         rs.execute(getRecipeId)
         recipeId = None
         for result in rs:
-            print("get recipe id results",result)
             recipeId = result
 
-        print(recipeId)
         for ingredient in ingredientList:
             searchQuery = '''SELECT ingredient_id FROM Ingredient WHERE LOWER(ingredient_name) = LOWER("{}")'''.format(ingredient[0])
             rs.execute(searchQuery)
-            print("past query")
             row = rs.fetchone()
-            print(row)
             if row is not None:
-                print("ingredient already exist")
                 self.ingredientIdList.append(row[0])
                 insertIngredientDetails = '''INSERT INTO IngredientOf (recipe_id, ingredient_id, amount, measurement_units)
                                                  VALUES ({}, {}, {}, "{}")'''.format(recipeId[0], row[0], ingredient[1], ingredient[2])
-                print(insertIngredientDetails)
                 rs.execute(insertIngredientDetails)
                 con.commit()
             else:
-                print("in ingredient else")
                 #insert into ingredient
                 insertIngredient = '''INSERT INTO Ingredient (ingredient_name) VALUES ("{}")'''.format(ingredient[0])
                 rs.execute(insertIngredient)
                 searchQuery = '''SELECT ingredient_id FROM Ingredient WHERE LOWER(ingredient_name) = LOWER("{}")'''.format(ingredient[0])
                 rs.execute(searchQuery)
                 row = rs.fetchone()
-                print("ingredient id", row[0])
                 #self.ingredientIdList.append(row[0])
-                print("past insert query")
                 #insert ingredient into recipe
                 insertIngredientDetails = '''INSERT INTO IngredientOf (recipe_id, ingredient_id, amount, measurement_units)
                                                  VALUES ({}, {}, {}, "{}")'''.format(recipeId[0], row[0], ingredient[1], ingredient[2])
-                print(insertIngredientDetails)
                 rs.execute(insertIngredientDetails)
                 con.commit()
-        print("after for ingredient loop")
-        #for ingredient_id in ingredientIdList:
-        #code to add instructions
-        #added instruction comments
+
         for instruction in instructions:
             insertInstruction = '''INSERT INTO Instruction (recipe_id, step_number, description)
                                         VALUES ({}, {}, "{}")'''.format(recipeId[0], instruction[0], instruction[1])
             rs.execute(insertInstruction)
             con.commit()
+
         """
         #add dietary restrictions
-        #restrictions.append("carnivore")
-        #restrictions.append("omnivore")
-        #restrictions =["r6", "r5", "vegan5"]
         for restriction in restrictions:
             searchQuery = '''SELECT restriction_id FROM DietaryRestriction WHERE LOWER(restriction_name) = LOWER("{}")'''.format(restrictions[0])
             rs.execute(searchQuery)
@@ -304,29 +287,29 @@ class AddRecipe:
             rs.execute(query)
             con.commit()
 
-            for restriction in restrictions:
+        for restriction in restrictions:
+            query = ''' SELECT restriction_id
+                        FROM DietaryRestriction
+                        WHERE LOWER(restriction_name) = LOWER("{input}")'''.format(input = restriction)
+            rs.execute(query)
+            index = rs.fetchone()
+            if index is not None:
+                index = index[0]
+            else:
+                query = '''INSERT INTO DietaryRestriction (restriction_name)
+                           VALUES ("{input}")'''.format(input = restriction)
+                rs.execute(query)
+                con.commit()
                 query = ''' SELECT restriction_id
                             FROM DietaryRestriction
-                            WHERE LOWER(restriction_name) = LOWER("{input}")'''.format(input = restriction)
+                            WHERE LOWER(restriction_name) = LOWER("{input}")'''.format(input = tool)
                 rs.execute(query)
                 index = rs.fetchone()
-                if index is not None:
-                    index = index[0]
-                else:
-                    query = '''INSERT INTO DietaryRestriction (restriction_name)
-                               VALUES ("{input}")'''.format(input = restriction)
-                    rs.execute(query)
-                    con.commit()
-                    query = ''' SELECT restriction_id
-                                FROM DietaryRestriction
-                                WHERE LOWER(restriction_name) = LOWER("{input}")'''.format(input = tool)
-                    rs.execute(query)
-                    index = rs.fetchone()
-                    print(index)
-                query = ''' INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id)
-                            VALUES ({input1}, {input2})'''.format(input1 = recipeId[0], input2 = index)
-                #rs.execute(query)
-                con.commit()
+            query = ''' INSERT INTO RecipeHasDietaryRestrictions (recipe_id, restriction_id)
+                        VALUES ({input1}, {input2})'''.format(input1 = recipeId[0], input2 = index)
+            #rs.execute(query)
+            con.commit()
+
 
 class Error:
 

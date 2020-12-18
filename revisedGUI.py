@@ -38,7 +38,6 @@ class LoginOrSignUp:
 
     def login(self):
         self.myFrame.destroy()
-        print("logging in")
         l = Login(self.root)
 
     def signup(self):
@@ -91,8 +90,6 @@ class Login:
     def login(self):
         loginUsername = self.username.get()
         loginPassword = self.password.get()
-        print(loginUsername)
-        print(loginPassword)
         rs = con.cursor()
         getPassword = '''SELECT password
                     FROM User
@@ -101,11 +98,10 @@ class Login:
         rs.execute(getPassword % (loginUsername))
         row = rs.fetchone()
         if row is not None:
-            print(row[0])
             if (row[0] == loginPassword):
-                print("login successful")
                 self.myFrame.destroy()
                 m = MainProgram(self.root, loginUsername)
+                return 0;
 
         self.error = Tk()
         self.error.title("Error")
@@ -121,7 +117,6 @@ class Login:
         option2.grid(column=2, row=2)
 
     def signUp(self):
-        self.error.destroy()
         self.myFrame.destroy()
         s = SignUp(root)
 
@@ -171,7 +166,6 @@ class SignUp:
         loginButton = ttk.Button(self.myFrame, text="Sign Up", command=self.signUp).grid(column=2, row=5, columnspan = 2, sticky=(W,E))
 
 
-
     def signUp(self):
         signUpUsername = self.username.get()
         signUpPassword = self.password.get()
@@ -190,21 +184,19 @@ class SignUp:
             messageLabel = ttk.Label(self.error, text="Username Already Exists")
             messageLabel.grid(column=1, row=1, columnspan=2)
 
-            option1 = ttk.Button(self.error, text="Create Account", command = self.signUp)
+            option1 = ttk.Button(self.error, text="Log In", command = self.logIn)
             option1.grid(column=1, row=2)
 
             option2 = ttk.Button(self.error, text="Try Again", command = self.tryAgain)
             option2.grid(column=2, row=2)
 
         else:
-            print("create account")#query = '''INSERT INTO Users()
             self.myFrame.destroy()
             m = MainProgram(self.root, signUpUsername)
 
-    def signUp(self):
-        self.error.destroy()
+    def logIn(self):
         self.myFrame.destroy()
-        s = SignUp(root)
+        l = logIn(root)
 
     def tryAgain(self):
         self.error.destroy()

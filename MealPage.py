@@ -17,9 +17,7 @@ class MealPage:
     idList = []
 
     def go(self, event):
-        print("here")
         mealName = self.mealList.get(mealList.curselection())
-        print(mealName)
 
     def __init__(self, master, user):
         self.myFrame = master
@@ -75,7 +73,7 @@ class MealPage:
             q = '''SELECT m.meal_name, m.meal_id
                     FROM Meal m JOIN RecipesInMeals rm ON (m.meal_id = rm.meal_id)
                     JOIN Rating r ON (r.recipe_id = rm.recipe_id)
-                    HAVING AVG(r.score) > {input};'''.format(input = float(averageRating))
+                    HAVING AVG(r.score) > {input}'''.format(input = float(averageRating))
             query += (" INTERSECT " + q)
 
 
@@ -87,7 +85,7 @@ class MealPage:
             q = '''SELECT DISTINCT m.meal_name, m.meal_id
                     FROM Meal m JOIN RecipesInMeals rm ON (m.meal_id = rm.meal_id)
                         JOIN Recipe r ON (rm.recipe_id = r.recipe_id)
-                    WHERE r.food_type IN ({input});'''.format(input = fInput)
+                    WHERE r.food_type IN ({input})'''.format(input = fInput)
             query += (" INTERSECT " + q)
 
         dietAmount = self.dietAmountField.get()
@@ -122,7 +120,6 @@ class MealPage:
                     GROUP BY m.meal_id
                     HAVING COUNT(*) >= {input1} AND COUNT(*) <= {input2}'''.format(input1 = float(recipeAmount1), input2 = float(recipeAmount2))
             query += (" INTERSECT " + q)
-            print(q)
 
         rs = con.cursor()
         rs.execute(query)
@@ -139,13 +136,10 @@ class MealPage:
         self.mealList.grid(column=1, row = 8)
 
     def go(self, event):
-        print("here in meal doubleClick")
 
         id_index = self.mealList.curselection()[0]
         meal_id = self.idList[id_index]
 
-        print(meal_id)
-        #print(mealName)
         d = DisplayMeal(meal_id)
 
     def isFloat(self, s):
@@ -170,7 +164,6 @@ class DisplayMeal:
         self.myFrame = Tk()
         self.myFrame.title("Meal")
         self.myFrame.geometry("350x350")
-        print(meal_id)
         self.recipeList = Listbox(self.myFrame, width = 40)
         getMealInfo = "SELECT meal_name, description FROM Meal WHERE meal_id = {}".format(meal_id)
         rs.execute(getMealInfo)
@@ -180,21 +173,19 @@ class DisplayMeal:
             mealDescription = Label(self.myFrame, text = mealInfo[1])
             mealDescription.pack()
 
+
         # execute query to get meal info
         getRecipeIds = "SELECT recipe_id FROM RecipesInMeals WHERE meal_id = {}".format(meal_id)
         rs.execute(getRecipeIds, (meal_id))
         count = 0
         self.idListArray.clear()
         for recipe_id in rs:
-            print(recipe_id)
             self.idListArray.append(recipe_id[0])
             #count += 1
             #self.recipeList.insert(count, str(recipe_id[0]))
 
         self.recipeList.delete(0, self.recipeList.size())
         self.recipeIdList.clear()
-        print("past clear list")
-        print(self.recipeList.size())
         for recipe_id in self.idListArray:
             rs = con.cursor()
             getRecipe = '''SELECT recipe_title, recipe_id
@@ -209,19 +200,13 @@ class DisplayMeal:
         '''for recipe_id in idList:
             #get recipes information
             getRecipe = '''
-        print(self.recipeList.size())
-        #id_index = self.mealList.curselection()[0]
-        #id_index = self.recipeList.curselection()[0]
-        #print("id index", id_index)
-        #self.recipe_id = self.idList[id_index]
+
         self.recipeList.bind('<Double-1>', self.go)
         self.recipeList.pack()
 
 
     def go(self, event):
-        print("display recipe meals")
         id_index = self.recipeList.curselection()[0]
-        print(id_index)
         d = DisplayRecipe(self.recipeIdList[id_index])
         # destroy everything in current frame so that recipe info can be built on top
         #for widget in self.myFrame.winfo_children():
