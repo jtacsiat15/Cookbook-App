@@ -118,11 +118,17 @@ class MealPage:
             q = '''SELECT DISTINCT m.meal_name, m.meal_id
                     FROM Meal m JOIN RecipesInMeals rm ON (m.meal_id = rm.meal_id)
                     GROUP BY m.meal_id
-                    HAVING COUNT(*) >= {input1} AND COUNT(*) <= {input2}'''.format(input1 = float(recipeAmount1), input2 = float(recipeAmount2))
+                    HAVING COUNT(*) >= 4 AND COUNT(*) <= 5'''.format(input1 = int(recipeAmount1), input2 = int(recipeAmount2))
             query += (" INTERSECT " + q)
 
+
+        subquery = '''SELECT r.meal_name, r.meal_id
+                    FROM MealRating m JOIN ({input}) r ON (m.meal_id = r.meal_id)
+                    ORDER BY m.avg_score DESC
+                    LIMIT 30'''.format(input = query)
+
         rs = con.cursor()
-        rs.execute(query)
+        rs.execute(subquery)
 
         self.mealList = Listbox(self.myFrame, width = 40)
         count = 0
@@ -173,7 +179,6 @@ class DisplayMeal:
             mealDescription = Label(self.myFrame, text = mealInfo[1])
             mealDescription.pack()
 
-
         # execute query to get meal info
         getRecipeIds = "SELECT recipe_id FROM RecipesInMeals WHERE meal_id = {}".format(meal_id)
         rs.execute(getRecipeIds, (meal_id))
@@ -196,14 +201,10 @@ class DisplayMeal:
                 count +=1
                 self.recipeIdList.append(recipe[1])
                 self.recipeList.insert(count, str(recipe[0]))
-        #do query to get the
-        '''for recipe_id in idList:
-            #get recipes information
-            getRecipe = '''
+
 
         self.recipeList.bind('<Double-1>', self.go)
         self.recipeList.pack()
-
 
     def go(self, event):
         id_index = self.recipeList.curselection()[0]

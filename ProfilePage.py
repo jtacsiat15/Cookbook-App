@@ -7,6 +7,7 @@ from tkinter import ttk
 import tkinter as tk
 import tkinter.font as tkFont
 from RecipePage import DisplayRecipe
+from RecipePage import RecipePage
 usr = config.mysql['user']
 pwd = config.mysql['password']
 hst = config.mysql['host']
@@ -350,4 +351,18 @@ class YourMeals:
         self.mealList.grid(column = 1, row = 2)
 
     def addMeal(self):
-        """ TODO """
+        """ adds a meal to the database """
+        m = AddMeal(self.currUser)
+
+
+
+class AddMeal:
+
+    def __init__(self, user):
+        self.myFrame = Tk()
+        self.currUser = user
+        self.myFrame.title("Add Meal")
+        self.myFrame.geometry("1000x600")
+        recipeSearchFrame = LabelFrame(self.myFrame, text = "Recipe Search")
+        r = RecipePage(recipeSearchFrame, self.currUser)
+        recipeSearchFrame.pack()

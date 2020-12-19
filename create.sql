@@ -11,6 +11,8 @@ DROP TABLE IF EXISTS Meal;
 DROP TABLE IF EXISTS User;
 DROP TABLE IF EXISTS CookingTool;
 DROP TABLE IF EXISTS DietaryRestriction;
+DROP VIEW IF EXISTS AvgRating;
+DROP VIEW IF EXISTS MealRating;
 
 -- #############################################################################
 -- CREATE TABLE STATEMENTS
@@ -114,3 +116,25 @@ CREATE TABLE RecipesInMeals(
   FOREIGN KEY (meal_id) REFERENCES Meal(meal_id) ON DELETE CASCADE,
   FOREIGN KEY (recipe_id) REFERENCES Recipe(recipe_id) ON DELETE CASCADE
 );
+
+CREATE VIEW AvgRating AS
+  SELECT r.recipe_id AS recipe_id, AVG(ra.score) AS avg_score
+  FROM Recipe r JOIN Rating ra ON (r.recipe_id = ra.recipe_id)
+  GROUP BY r.recipe_id;
+
+CREATE VIEW MealRating AS
+  SELECT r.meal_id AS meal_id, AVG(ra.avg_score) AS avg_score
+  FROM RecipesInMeals r JOIN AvgRating ra ON (r.recipe_id = ra.recipe_id)
+  GROUP BY r.meal_id;
+
+CREATE INDEX cuisineIndex
+ON Recipe (cuisine_type);
+
+CREATE INDEX foodIndex
+ON Recipe (food_type);
+
+CREATE INDEX restrictionIndex
+ON DietaryRestriction (restriction_name);
+
+CREATE INDEX toolIndex
+ON CookingTool (tool_name);

@@ -2,6 +2,45 @@
 
 import random
 
+
+def values(count, num, instructions, measurements, usernames):
+    cnt_common = random.sample(range(0, 12), random.randint(1,6))
+    cnt_s = random.sample(range(0, 9), random.randint(1,9))
+    for c in cnt_common:
+        ingredientOfquery = ("("+ str(count) + ", " + str(71 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
+    for c in cnt_s:
+        ingredientOfquery += ("(" + str(count) + ", " + str(num + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
+    cnt_tools = random.sample(range(1,15), random.randint(1,14))
+    toolsquery = ""
+    for c in cnt_tools:
+        toolsquery += ("(" + str(c) + ", " + str(count) + "),\n")
+    cnt_restr = random.sample(range(1,10), random.randint(1,7))
+    restrquery = ""
+    for c in cnt_restr:
+        if c < 6:
+            restrquery = ("(" + str(count) + ", " + str(c) + "),\n")
+
+    reviewsquery = ""
+    scores = []
+    for i in range(30):
+        rnge = random.randint(1,3)
+        if rnge == 3:
+            scores.append(random.randint(4,5))
+        elif rnge == 2:
+            scores.append(random.randint(3,5))
+        else:
+            scores.append(random.randint(1,4))
+    year = [random.randint(2005, 2020) for i in range(30)]
+    month = [random.randint(1, 12) for i in range(30)]
+    day = [random.randint(1, 28) for i in range(30)]
+    for i in range(30):
+        reviewsquery = "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
+    cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
+    instructionsquery = ""
+    for i in range(len(cnt_steps)):
+        instructionsquery += "("+ str(count) + ", " + str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
+    return ingredientOfquery, toolsquery, restrquery, reviewsquery, instructionsquery
+
 def generateValues(fout):
     """ outputs an insert statements for amount statement to specified file """
 
@@ -98,184 +137,72 @@ def generateValues(fout):
     for j in japaneseFoods:
         for t in titles:
             query+= "(\"" + j + "\", \"Japanese\", \"" + t + j + "\", \"" + usernames[random.randint(0, len(usernames)-1)]+"\"),\n"
-            cnt_common = random.sample(range(0, 12), random.randint(1,6))
-            cnt_s = random.sample(range(0, 9), random.randint(1,9))
-            for c in cnt_common:
-                ingredientOfquery += ("("+ str(count) + ", " + str(71 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            for c in cnt_s:
-                ingredientOfquery += ("(" + str(count) + ", " + str(1 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            cnt_tools = random.sample(range(1,15), random.randint(1,14))
-            for c in cnt_tools:
-                toolsquery += ("(" + str(c) + ", " + str(count) + "),\n")
-            cnt_restr = random.sample(range(1,10), random.randint(1,7))
-            for c in cnt_restr:
-                if c < 6:
-                    restrquery += ("(" + str(count) + ", " + str(c) + "),\n")
-            scores = [random.randint(1,5) for i in range (30)]
-            year = [random.randint(2005, 2020) for i in range(30)]
-            month = [random.randint(1, 12) for i in range(30)]
-            day = [random.randint(1, 28) for i in range(30)]
-            for i in range(30):
-                reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
-            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
-            for i in range(len(cnt_steps)):
-                instructionsquery += "("+ str(count) + ", " + str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
+            ingredient, tools, restr, reviews, instr = values(count, 1, instructions, measurements, usernames)
+            ingredientOfquery += ingredient
+            toolsquery += tools
+            restrquery += restr
+            reviewsquery += reviews
+            instructionsquery += instr
             count += 1
     for j in chineseFoods:
         for t in titles:
             query+= "(\""+j+"\", \"Chinese\", \"" + t + j + "\", \"" + usernames[random.randint(0, len(usernames)-1)]+"\"),\n"
-            cnt_common = random.sample(range(0, 12), random.randint(1,6))
-            cnt_s = random.sample(range(0, 9), random.randint(1,9))
-            for c in cnt_common:
-                ingredientOfquery += ("("+ str(count) + ", " + str(71 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            for c in cnt_s:
-                ingredientOfquery += ("(" + str(count) + ", " + str(11 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            cnt_tools = random.sample(range(1,15), random.randint(1,14))
-            for c in cnt_tools:
-                toolsquery += ("(" + str(c) + ", " + str(count) + "),\n")
-            cnt_restr = random.sample(range(1,10), random.randint(1,7))
-            for c in cnt_restr:
-                if c < 6:
-                    restrquery += ("(" + str(count) + ", " + str(c) + "),\n")
-            scores = [random.randint(1,5) for i in range (30)]
-            year = [random.randint(2005, 2020) for i in range(30)]
-            month = [random.randint(1, 12) for i in range(30)]
-            day = [random.randint(1, 28) for i in range(30)]
-            for i in range(30):
-                reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
-            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
-            for i in range(len(cnt_steps)):
-                instructionsquery += "("+ str(count) + ", " + str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
+            ingredient, tools, restr, reviews, instr = values(count, 11, instructions, measurements, usernames)
+            ingredientOfquery += ingredient
+            toolsquery += tools
+            restrquery += restr
+            reviewsquery += reviews
+            instructionsquery += instr
             count += 1
     for j in italianFoods:
         for t in titles:
             query+= "(\""+j+"\", \"Italian\", \"" + t + j + "\", \"" + usernames[random.randint(0, len(usernames)- 1)]+"\"),\n"
-            cnt_common = random.sample(range(0, 12), random.randint(1,6))
-            cnt_s = random.sample(range(0, 9), random.randint(1,9))
-            for c in cnt_common:
-                ingredientOfquery += ("("+ str(count) + ", " + str(71 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            for c in cnt_s:
-                ingredientOfquery += ("(" + str(count) + ", " + str(21 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            cnt_tools = random.sample(range(1,15), random.randint(1,14))
-            for c in cnt_tools:
-                toolsquery += ("(" + str(c) + ", " + str(count) + "),\n")
-            cnt_restr = random.sample(range(1,10), random.randint(1,7))
-            for c in cnt_restr:
-                if c < 6:
-                    restrquery += ("(" + str(count) + ", " + str(c) + "),\n")
-            scores = [random.randint(1,5) for i in range (30)]
-            year = [random.randint(2005, 2020) for i in range(30)]
-            month = [random.randint(1, 12) for i in range(30)]
-            day = [random.randint(1, 28) for i in range(30)]
-            for i in range(30):
-                reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
-            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
-            for i in range(len(cnt_steps)):
-                instructionsquery += "("+ str(count) + ", " + str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
+            ingredient, tools, restr, reviews, instr = values(count, 21, instructions, measurements, usernames)
+            ingredientOfquery += ingredient
+            toolsquery += tools
+            restrquery += restr
+            reviewsquery += reviews
+            instructionsquery += instr
             count += 1
     for j in americanFoods:
         for t in titles:
             query+= "(\""+j+"\", \"American\", \"" + t + j + "\", \"" + usernames[random.randint(0, len(usernames) - 1)]+"\"),\n"
-            cnt_common = random.sample(range(0, 12), random.randint(1,6))
-            cnt_s = random.sample(range(0, 9), random.randint(1,9))
-            for c in cnt_common:
-                ingredientOfquery += ("("+ str(count) + ", " + str(71 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            for c in cnt_s:
-                ingredientOfquery += ("(" + str(count) + ", " + str(61 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            cnt_tools = random.sample(range(1,15), random.randint(1,14))
-            for c in cnt_tools:
-                toolsquery += ("(" + str(c) + ", " + str(count) + "),\n")
-            cnt_restr = random.sample(range(1,10), random.randint(1,7))
-            for c in cnt_restr:
-                if c < 6:
-                    restrquery += ("(" + str(count) + ", " + str(c) + "),\n")
-            scores = [random.randint(1,5) for i in range (30)]
-            year = [random.randint(2005, 2020) for i in range(30)]
-            month = [random.randint(1, 12) for i in range(30)]
-            day = [random.randint(1, 28) for i in range(30)]
-            for i in range(30):
-                reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
-            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
-            for i in range(len(cnt_steps)):
-                instructionsquery += "("+ str(count) + ", " + str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
+            ingredient, tools, restr, reviews, instr = values(count, 61, instructions, measurements, usernames)
+            ingredientOfquery += ingredient
+            toolsquery += tools
+            restrquery += restr
+            reviewsquery += reviews
+            instructionsquery += instr
             count += 1
     for j in indianFoods:
         for t in titles:
             query+= "(\""+j+"\", \"Indian\", \"" + t + j + "\", \"" + usernames[random.randint(0, len(usernames) - 1)] + "\"),\n"
-            cnt_common = random.sample(range(0, 12), random.randint(1,6))
-            cnt_s = random.sample(range(0, 9), random.randint(1,9))
-            for c in cnt_common:
-                ingredientOfquery += ("("+ str(count) + ", " + str(71 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            for c in cnt_s:
-                ingredientOfquery += ("(" + str(count) + ", " + str(31 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            cnt_tools = random.sample(range(1,15), random.randint(1,14))
-            for c in cnt_tools:
-                toolsquery += ("(" + str(c) + ", " + str(count) + "),\n")
-            cnt_restr = random.sample(range(1,10), random.randint(1,7))
-            for c in cnt_restr:
-                if c < 6:
-                    restrquery += ("(" + str(count) + ", " + str(c) + "),\n")
-            scores = [random.randint(1,5) for i in range (30)]
-            year = [random.randint(2005, 2020) for i in range(30)]
-            month = [random.randint(1, 12) for i in range(30)]
-            day = [random.randint(1, 28) for i in range(30)]
-            for i in range(30):
-                reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
-            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
-            for i in range(len(cnt_steps)):
-                instructionsquery += "("+ str(count) + ", " + str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
+            ingredient, tools, restr, reviews, instr = values(count, 31, instructions, measurements, usernames)
+            ingredientOfquery += ingredient
+            toolsquery += tools
+            restrquery += restr
+            reviewsquery += reviews
+            instructionsquery += instr
             count += 1
     for j in vietnameseFoods:
         for t in titles:
             query+= "(\""+j+"\", \"Vietnamese\", \"" + t + j + "\", \"" + usernames[random.randint(0, len(usernames) - 1)]+ "\"),\n"
-            cnt_common = random.sample(range(0, 12), random.randint(1,6))
-            cnt_s = random.sample(range(0, 9), random.randint(1,9))
-            for c in cnt_common:
-                ingredientOfquery += ("("+ str(count) + ", " + str(71 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            for c in cnt_s:
-                ingredientOfquery += ("(" + str(count) + ", " + str(41 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            cnt_tools = random.sample(range(1,15), random.randint(1,14))
-            for c in cnt_tools:
-                toolsquery += ("(" + str(c) + ", " + str(count) + "),\n")
-            cnt_restr = random.sample(range(1,10), random.randint(1,7))
-            for c in cnt_restr:
-                if c < 6:
-                    restrquery += ("(" + str(count) + ", " + str(c) + "),\n")
-            scores = [random.randint(1,5) for i in range (30)]
-            year = [random.randint(2005, 2020) for i in range(30)]
-            month = [random.randint(1, 12) for i in range(30)]
-            day = [random.randint(1, 28) for i in range(30)]
-            for i in range(30):
-                reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
-            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
-            for i in range(len(cnt_steps)):
-                instructionsquery += "("+ str(count) + ", " +str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
+            ingredient, tools, restr, reviews, instr = values(count, 41, instructions, measurements, usernames)
+            ingredientOfquery += ingredient
+            toolsquery += tools
+            restrquery += restr
+            reviewsquery += reviews
+            instructionsquery += instr
             count += 1
     for j in mexicanFoods:
         for t in titles:
             query+= "(\""+j+"\", \"Mexican\", \"" + t + j + "\", \"" + usernames[random.randint(0, len(usernames) - 1)] + "\"),\n"
-            cnt_common = random.sample(range(0, 12), random.randint(1,6))
-            cnt_s = random.sample(range(0, 9), random.randint(1,9))
-            for c in cnt_common:
-                ingredientOfquery += ("("+ str(count) + ", " + str(71 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            for c in cnt_s:
-                ingredientOfquery += ("(" + str(count) + ", " + str(51 + c) + ", " + str(random.randint(1,10)) + ", \"" + str(measurements[random.randint(0,2)])+ "\"),\n")
-            cnt_tools = random.sample(range(1,15), random.randint(1,14))
-            for c in cnt_tools:
-                toolsquery += ("(" + str(c) + ", " + str(count) + "),\n")
-            cnt_restr = random.sample(range(1,10), random.randint(1,7))
-            for c in cnt_restr:
-                if c < 6:
-                    restrquery += ("(" + str(count) + ", " + str(c) + "),\n")
-            scores = [random.randint(2,5) for i in range (30)]
-            year = [random.randint(2005, 2020) for i in range(30)]
-            month = [random.randint(1, 12) for i in range(30)]
-            day = [random.randint(1, 28) for i in range(30)]
-            for i in range(30):
-                reviewsquery += "(" + str(scores[i]) + ", \"" + str(year[i]) + "-" + str(month[i])+ "-" + str(day[i]) + "\", \"" + str(usernames[random.randint(0, len(usernames)-1)]) + "\", " + str(count) + "),\n"
-            cnt_steps = random.sample(range(0, 12), random.randint(1, 10))
-            for i in range(len(cnt_steps)):
-                instructionsquery += "("+ str(count) + ", " + str(i+1) + ", \"" + instructions[cnt_steps[i]] + "\"),\n"
+            ingredient, tools, restr, reviews, instr = values(count, 51, instructions, measurements, usernames)
+            ingredientOfquery += ingredient
+            toolsquery += tools
+            restrquery += restr
+            reviewsquery += reviews
+            instructionsquery += instr
             count += 1
 
     query = query[:-2] + ";\n\n"

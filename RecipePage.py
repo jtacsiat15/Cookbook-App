@@ -27,6 +27,7 @@ class RecipePage:
     cuisineIngredientField = None
 
     def __init__(self, master, user):
+
         self.myFrame = master
 
         usernameLabel = ttk.Label(self.myFrame, text="Enter usernames (separated by commas):").grid(column=1, row=1)
@@ -56,8 +57,11 @@ class RecipePage:
         self.cuisineIngredientField.grid(column=2, row = 6)
 
         searchButton = ttk.Button(self.myFrame, text="Search", command=self.search).grid(column=1, row=7, columnspan=2)
+
     def search(self):
+        self.recipeIDList = []
         self.recipeList = Listbox(self.myFrame, width = 40)
+
         query = '''SELECT r1.recipe_title, r1.recipe_id
                     FROM Recipe r1 '''
 
@@ -114,8 +118,13 @@ class RecipePage:
                     WHERE cuisine_type IN ({cuisines})'''.format(cuisines = input)
             query += (" INTERSECT " + q)
 
+        subquery = '''SELECT r.recipe_title, r.recipe_id
+                    FROM AvgRating a JOIN ({input}) r ON (a.recipe_id = r.recipe_id)
+                    ORDER BY a.avg_score DESC
+                    LIMIT 20'''.format(input = query)
+
         rs = con.cursor()
-        rs.execute(query)
+        rs.execute(subquery)
 
         self.recipeList.bind('<Double-1>', self.go)
         count = 0
@@ -146,6 +155,7 @@ class DisplayRecipe:
         #display ingredients
         rs = con.cursor()
 
+
         query = '''SELECT recipe_title, cuisine_type, food_type
                     FROM Recipe
                     WHERE recipe_id = {}'''.format(recipe_id)
@@ -159,11 +169,8 @@ class DisplayRecipe:
             desc2 = Label(self.myFrame, text = "Food: " + str(info[2]))
             desc2.pack()
 
-
-        query = ''' SELECT AVG(ra.score)
-            FROM Recipe r JOIN Rating ra ON (r.recipe_id = ra.recipe_id)
-            WHERE r.recipe_id = {}
-            GROUP BY r.recipe_id'''.format(recipe_id)
+        query = ''' SELECT avg_score
+                    FROM AvgRating WHERE recipe_id = {}'''.format(recipe_id)
 
         rs.execute(query)
         for info in rs:
@@ -219,3 +226,4 @@ class DisplayRecipe:
             instructionCount += 1
             instructionsList.insert(instructionCount, instruction)
         instructionsList.pack()
+22
